@@ -86,21 +86,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Zaxia Healthcare Pvt. Ltd. — a Kolkata-based pharmaceutical marketing and trading company delivering certified capsules, tablets, syrups and injections across India.",
+          "Zaxia Healthcare Pvt. Ltd. delivers certified capsules, tablets, syrups and injections with 10+ years of expertise. Kolkata-based, serving India and beyond.",
       },
       { name: "author", content: "Zaxia Healthcare Pvt. Ltd." },
       { property: "og:title", content: "Zaxia Healthcare — Trusted Pharmaceutical Solutions" },
       {
         property: "og:description",
         content:
-          "Certified pharmaceutical products and patient-centred care from Zaxia Healthcare, Kolkata.",
+          "Zaxia Healthcare Pvt. Ltd. delivers certified capsules, tablets, syrups and injections with 10+ years of expertise. Kolkata-based, serving India and beyond.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Zaxia Healthcare — Trusted Pharmaceutical Solutions" },
+      { name: "twitter:description", content: "Zaxia Healthcare Pvt. Ltd. delivers certified capsules, tablets, syrups and injections with 10+ years of expertise. Kolkata-based, serving India and beyond." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/499cafae-3186-4e97-b158-5c008abf5ab3" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/499cafae-3186-4e97-b158-5c008abf5ab3" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
