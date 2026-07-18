@@ -51,13 +51,13 @@ function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 rounded-md gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-elegant hover:opacity-95"
+                className="btn inline-flex items-center gap-2 rounded-md gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-elegant hover:opacity-95"
               >
                 Explore products <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-sm font-medium text-brand-ink hover:border-primary/40"
+                className="btn inline-flex items-center rounded-md border border-border bg-card px-6 py-3 text-sm font-medium text-brand-ink hover:border-primary/40"
               >
                 Talk to our team
               </Link>
@@ -138,10 +138,10 @@ function Home() {
               className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:gap-2.5 transition-all"
             >
               Learn more about us <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
+                <Link
+                  to="/contact"
+                  className="btn inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:gap-2.5 transition-all"
+                >
 
       {/* KEY PRODUCTS */}
       <section className="py-24 bg-surface">

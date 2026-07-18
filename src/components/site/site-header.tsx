@@ -52,14 +52,14 @@ export function SiteHeader() {
           {isAdmin && (
             <Link
               to="/admin"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border/70 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:border-primary/40"
+              className="btn inline-flex items-center gap-1.5 rounded-md border border-border/70 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:border-primary/40"
             >
               <ShieldCheck className="h-4 w-4" /> Admin
             </Link>
           )}
           <Link
             to="/contact"
-            className="inline-flex items-center rounded-md gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
+            className="btn inline-flex items-center rounded-md gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
           >
             Enquire now
           </Link>
@@ -95,7 +95,7 @@ export function SiteHeader() {
             <Link
               to="/contact"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-md gradient-brand px-4 py-2.5 text-sm font-medium text-primary-foreground"
+              className="btn mt-2 inline-flex items-center justify-center rounded-md gradient-brand px-4 py-2.5 text-sm font-medium text-primary-foreground"
             >
               Enquire now
             </Link>
