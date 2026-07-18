@@ -8,8 +8,8 @@ interface Props {
 
 export function ProductCard({ product, category }: Props) {
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-border/70 bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-elegant hover:border-primary/30">
-      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/8 text-primary group-hover:gradient-brand group-hover:text-primary-foreground transition-colors">
+    <article className="group relative flex flex-col rounded-[2rem] border border-border/70 bg-card p-6 transition-all duration-500 card-3d hover:border-primary/30 hover:shadow-elegant">
+      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-3xl bg-primary/10 text-primary group-hover:gradient-brand group-hover:text-primary-foreground transition-colors duration-300">
         <Pill className="h-6 w-6" />
       </div>
       {category && (

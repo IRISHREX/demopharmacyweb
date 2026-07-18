@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/site/section-heading";
 import { ProductCard } from "@/components/site/product-card";
 import heroImg from "@/assets/hero-pharmacy.jpg";
 import aboutImg from "@/assets/about-lab.jpg";
+import logoImg from "@/assets/Zaxia_Logo.png";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -74,14 +75,24 @@ function Home() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-6 gradient-brand rounded-3xl opacity-20 blur-2xl" />
-            <img
-              src={heroImg}
-              alt="Zaxia Healthcare pharmaceutical capsules"
-              width={1600}
-              height={1200}
-              className="relative rounded-2xl shadow-elegant w-full h-auto object-cover aspect-[4/3]"
-            />
+            <div className="absolute -left-10 top-8 h-72 w-72 rounded-full bg-primary/20 blur-3xl opacity-70 hero-blob" />
+            <div className="absolute right-0 top-16 h-52 w-52 rounded-full bg-cyan-200/15 blur-3xl opacity-75 hero-blob animation-delay-2000" />
+            <div className="absolute -inset-6 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(124, 87, 255, 0.18),transparent_36%)]" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-elegant card-3d transition-transform duration-500 hover:-translate-y-2 hover:shadow-soft">
+              <img
+                src={heroImg}
+                alt="Zaxia Healthcare pharmaceutical capsules"
+                width={1600}
+                height={1200}
+                className="relative h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+              />
+              <div className="absolute bottom-5 left-5 rounded-3xl border border-white/15 bg-background/75 p-5 backdrop-blur-xl">
+                <img src={logoImg} alt="Zaxia Healthcare logo" className="h-10 w-auto rounded-lg" />
+                <p className="mt-3 max-w-xs text-sm text-muted-foreground leading-relaxed">
+                  Modern pharma distribution with premium speed, compliance and care.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

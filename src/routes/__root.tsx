@@ -7,7 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import * as THREE from "three";
+import PageTransition from "@/components/ui/page-transition";
+import LiveBackground from "@/components/ui/live-background";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -137,14 +140,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen relative overflow-hidden flex flex-col bg-background">
+        <LiveBackground />
         <SiteHeader />
-        <main className="flex-1">
+        <main className="relative z-10 flex-1">
           <Outlet />
         </main>
         <SiteFooter />
+        <PageTransition />
       </div>
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );
 }
+

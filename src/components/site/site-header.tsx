@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Pill } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logoImg from "@/assets/Zaxia_Logo.png";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -17,10 +18,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="container-page flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-lg gradient-brand text-primary-foreground shadow-soft">
-            <Pill className="h-5 w-5" />
-          </span>
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={logoImg}
+            alt="Zaxia Healthcare logo"
+            className="h-11 w-11 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
+          />
           <span className="flex flex-col leading-none">
             <span className="font-display text-lg font-semibold text-brand-ink">Zaxia</span>
             <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
