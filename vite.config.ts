@@ -12,4 +12,11 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    server: {
+      // Allowlist hosts for preview/deploy environments that proxy to this app.
+      // See the build error: add pharmacywebapp-qcls.onrender.com here to permit requests.
+      allowedHosts: ["pharmacywebapp-qcls.onrender.com"],
+    },
+  },
 });
