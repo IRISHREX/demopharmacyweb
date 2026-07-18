@@ -1,13 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 
 export default function PageTransition() {
   const router = useRouter();
+  const status = useRouterState({ select: (s) => s.status });
+  const isLoading = useRouterState({ select: (s) => s.isLoading });
+  const isTransitioning = useRouterState({ select: (s) => s.isTransitioning });
+  const isPending = status === "pending" || isLoading || isTransitioning;
+
   const [active, setActive] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const activeRef = useRef(false);
+  const pendingRef = useRef(false);
   const progressRef = useRef(0);
 
   useEffect(() => {
@@ -64,19 +70,19 @@ export default function PageTransition() {
     for (let i = 0; i < particleCount; i += 1) {
       const hue = 0.55 + Math.random() * 0.08;
       const material = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color().setHSL(0.33 + Math.random() * 0.06, 0.92, 0.55),
+        color: new THREE.Color().setHSL(0.33 + Math.random() * 0.04, 0.72, 0.68),
         metalness: 0,
         roughness: 0.02,
-        transmission: 0.9,
+        transmission: 0.98,
         transparent: true,
-        opacity: 0.16,
-        ior: 1.48,
-        clearcoat: 0.72,
-        clearcoatRoughness: 0.04,
-        reflectivity: 0.7,
-        envMapIntensity: 1.1,
+        opacity: 0.1,
+        ior: 1.55,
+        clearcoat: 1,
+        clearcoatRoughness: 0.06,
+        reflectivity: 0.72,
+        envMapIntensity: 1.2,
         emissive: new THREE.Color(0x7cff7d),
-        emissiveIntensity: 0.8,
+        emissiveIntensity: 0.24,
       });
 
       const mesh = new THREE.Mesh(geometry, material);
@@ -123,18 +129,18 @@ export default function PageTransition() {
 
       const wrapper = wrapperRef.current;
       if (activeRef.current) {
-        progressRef.current = Math.min(1, progressRef.current + 0.022);
+        progressRef.current = Math.min(1, progressRef.current + 0.046);
         const progress = progressRef.current;
-        const sphereProgress = Math.min(1, progress * 2);
-        const blastProgress = Math.max(0, (progress - 0.5) * 2);
-        const sphereEase = progress < 0.5 ? 1 - Math.pow(1 - sphereProgress, 3) : 1;
-        const blastEase = progress < 0.5 ? 0 : 1 - Math.pow(1 - blastProgress, 3);
+        const sphereProgress = Math.min(1, progress * 2.4);
+        const blastProgress = Math.max(0, (progress - 0.4) * 2.8);
+        const sphereEase = progress < 0.4 ? 1 - Math.pow(1 - sphereProgress, 4) : 1;
+        const blastEase = progress < 0.4 ? 0 : 1 - Math.pow(1 - blastProgress, 4);
 
         group.scale.setScalar(1 + sphereEase * 0.18 + blastEase * 0.16);
         camera.position.z = 68 - sphereEase * 6 - blastEase * 10;
 
-        const flash = Math.max(0, 1 - Math.abs(progress - 0.58) * 4.2) * (0.6 + progress * 0.24);
-        const overlay = Math.min(0.85, sphereEase * 0.3 + blastEase * 0.8);
+        const flash = Math.max(0, 1 - Math.abs(progress - 0.52) * 4.8) * (0.72 + progress * 0.28);
+        const overlay = Math.min(0.9, sphereEase * 0.28 + blastEase * 0.88);
         wrapper?.style.setProperty("--transition-flash", flash.toString());
         wrapper?.style.setProperty("--transition-overlay", overlay.toString());
 
@@ -164,19 +170,33 @@ export default function PageTransition() {
         });
 
         if (progress >= 1) {
-          activeRef.current = false;
-          setActive(false);
-          progressRef.current = 0;
-          wrapper?.style.setProperty("--transition-flash", "0");
-          wrapper?.style.setProperty("--transition-overlay", "0");
-          cubes.forEach((resetCube, index) => {
-            resetCube.position.copy(startPositions[index]);
-            resetCube.material.opacity = 1;
-            resetCube.material.emissiveIntensity = 0.95;
-            resetCube.scale.setScalar(0.9 + Math.random() * 0.14);
-          });
-          group.scale.setScalar(1);
-          camera.position.z = 58;
+          if (pendingRef.current) {
+            progressRef.current = 0;
+            wrapper?.style.setProperty("--transition-flash", "0");
+            wrapper?.style.setProperty("--transition-overlay", "0");
+            cubes.forEach((resetCube, index) => {
+              resetCube.position.copy(startPositions[index]);
+              resetCube.material.opacity = 1;
+              resetCube.material.emissiveIntensity = 0.95;
+              resetCube.scale.setScalar(0.9 + Math.random() * 0.14);
+            });
+            group.scale.setScalar(1);
+            camera.position.z = 58;
+          } else {
+            activeRef.current = false;
+            setActive(false);
+            progressRef.current = 0;
+            wrapper?.style.setProperty("--transition-flash", "0");
+            wrapper?.style.setProperty("--transition-overlay", "0");
+            cubes.forEach((resetCube, index) => {
+              resetCube.position.copy(startPositions[index]);
+              resetCube.material.opacity = 1;
+              resetCube.material.emissiveIntensity = 0.95;
+              resetCube.scale.setScalar(0.9 + Math.random() * 0.14);
+            });
+            group.scale.setScalar(1);
+            camera.position.z = 58;
+          }
         }
       } else {
         cubes.forEach((cube, index) => {
@@ -210,17 +230,24 @@ export default function PageTransition() {
     };
   }, []);
 
-  useEffect(() => {
-    const startTransition = () => {
-      if (activeRef.current) return;
-      activeRef.current = true;
-      progressRef.current = 0;
-      setActive(true);
-    };
+  const startTransition = useCallback(() => {
+    if (activeRef.current) return;
+    activeRef.current = true;
+    progressRef.current = 0;
+    setActive(true);
+  }, []);
 
+  useEffect(() => {
+    pendingRef.current = isPending;
+    if (isPending && !activeRef.current) {
+      startTransition();
+    }
+  }, [isPending, startTransition]);
+
+  useEffect(() => {
     const unsubscribe = router.subscribe("onBeforeNavigate", startTransition);
     return unsubscribe;
-  }, [router]);
+  }, [router, startTransition]);
 
   return (
     <div ref={wrapperRef} className={active ? "page-transition-wrapper active" : "page-transition-wrapper"}>
