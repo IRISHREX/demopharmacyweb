@@ -53,34 +53,15 @@ export default function LiveBackground() {
       }
     }, { passive: true });
 
-    // Detect page luminance and pick palette
-    // - light bg  -> greenish grid
-    // - dark bg   -> yellowish grid
-    let palette = { a: "rgba(60,200,110,0.22)", b: "rgba(40,180,90,0.42)", cursor: "rgba(90,220,140,0.28)" };
-    const detectPalette = () => {
-      const bg = getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
-      const m = bg.match(/\d+(\.\d+)?/g);
-      if (!m) return;
-      const [r, g, b] = m.map(Number);
-      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-      if (lum < 0.5) {
-        // dark -> yellow/amber neon
-        palette = {
-          a: "rgba(255,230,100,0.18)",
-          b: "rgba(255,210,60,0.38)",
-          cursor: "rgba(255,220,120,0.32)",
-        };
-      } else {
-        // light -> green neon
-        palette = {
-          a: "rgba(60,200,110,0.20)",
-          b: "rgba(40,180,90,0.40)",
-          cursor: "rgba(90,220,140,0.30)",
-        };
-      }
+    // Use a consistently green neon palette for the background grid
+    const palette = {
+      a: "rgba(80, 193, 230, 0.22)",
+      b: "rgba(55, 122, 209, 0.44)",
+      cursor: "rgba(104, 183, 239, 0.34)",
     };
-    detectPalette();
-    const paletteInterval = window.setInterval(detectPalette, 1500);
+    const paletteInterval = window.setInterval(() => {
+      // keep palette stable while allowing future theming updates
+    }, 1500);
 
     let raf = 0;
     let t = 0;

@@ -37,10 +37,12 @@ function Home() {
               <Sparkles className="h-3.5 w-3.5" />
               10+ years of pharmaceutical expertise
             </div>
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05]">
-              Trusted medicines for a{" "}
-              <span className="italic text-primary">healthier tomorrow.</span>
-            </h1>
+            <div className="typewriter">
+              <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] gradient-heading">
+                Trusted medicines for a{" "}
+                <span className="italic">healthier tomorrow.</span>
+              </h1>
+            </div>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed">
               Zaxia Healthcare is a Kolkata-based pharmaceutical marketing and trading
               company delivering certified, high-quality formulations across India — with
@@ -206,7 +208,7 @@ function Home() {
         <div className="container-page">
           <div className="relative overflow-hidden rounded-3xl gradient-brand px-8 py-16 md:px-16 md:py-20 text-primary-foreground">
             <div className="relative max-w-2xl">
-              <h2 className="text-3xl sm:text-4xl font-semibold text-primary-foreground">
+              <h2 className="text-3xl sm:text-4xl font-semibold text-primary-foreground gradient-heading">
                 Partner with a healthcare team you can trust.
               </h2>
               <p className="mt-4 text-primary-foreground/85 text-lg">

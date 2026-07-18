@@ -54,7 +54,7 @@ function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl">Dashboard</h1>
+        <h1 className="text-3xl gradient-heading">Dashboard</h1>
         <p className="mt-1 text-muted-foreground">Overview of your Zaxia Healthcare site.</p>
       </div>
 

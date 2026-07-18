@@ -22,7 +22,7 @@ function About() {
         <div className="container-page py-20 md:py-28">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">About Us</p>
-            <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight">
+            <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight gradient-heading">
               Healthcare, engineered around <span className="italic text-primary">trust.</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">

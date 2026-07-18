@@ -4,23 +4,15 @@ import logoImg from "@/assets/Zaxia_Logo.png";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-border/60 bg-surface">
+    <footer className="mt-24 border-t bg-surface/30 bg-emerald-950/95 shadow-[0_32px_90px_-56px_rgba(64, 224, 255, 0.45)] backdrop-blur-xl">
       <div className="container-page py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3">
             <img
               src={logoImg}
               alt="Zaxia Healthcare logo"
-              className="h-10 w-10 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
+              className="h-18 w-18 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
             />
-            <div>
-              <div className="font-display text-lg font-semibold text-brand-ink">
-                Zaxia Healthcare
-              </div>
-              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                Trusted care
-              </div>
-            </div>
           </div>
           <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
             Pharmaceutical marketing and trading company committed to accessible,

@@ -70,7 +70,7 @@ function AuthPage() {
   return (
     <section className="container-page py-20">
       <div className="mx-auto max-w-md rounded-2xl border border-border/70 bg-card p-8 shadow-soft">
-        <h1 className="text-2xl">{mode === "signin" ? "Admin sign in" : "Create admin account"}</h1>
+        <h1 className="text-2xl gradient-heading">{mode === "signin" ? "Admin sign in" : "Create admin account"}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {mode === "signin"
             ? "Access the Zaxia Healthcare admin panel."

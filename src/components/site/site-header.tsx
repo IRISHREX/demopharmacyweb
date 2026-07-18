@@ -24,14 +24,8 @@ export function SiteHeader() {
           <img
             src={logoImg}
             alt="Zaxia Healthcare logo"
-            className="h-11 w-11 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
+            className="h-20 w-20 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
           />
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-lg font-semibold text-brand-ink">Zaxia</span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              Healthcare
-            </span>
-          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">

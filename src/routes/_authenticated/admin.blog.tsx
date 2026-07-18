@@ -119,7 +119,7 @@ function AdminBlog() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl">Blog</h1>
+          <h1 className="text-3xl gradient-heading">Blog</h1>
           <p className="mt-1 text-muted-foreground">Publish articles and product updates.</p>
         </div>
         <Button onClick={openCreate}><Plus className="mr-1.5 h-4 w-4" /> New post</Button>

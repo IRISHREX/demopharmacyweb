@@ -56,7 +56,7 @@ function Contact() {
       <section className="gradient-hero">
         <div className="container-page py-16 md:py-20 max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Contact</p>
-          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold">Let's talk healthcare.</h1>
+          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Let's talk healthcare.</h1>
           <p className="mt-4 text-lg text-muted-foreground">
             Distributor enquiries, product information, clinician partnerships — our team
             replies within one business day.

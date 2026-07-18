@@ -48,7 +48,7 @@ function Products() {
       <section className="gradient-hero">
         <div className="container-page py-16 md:py-20">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Product Catalog</p>
-          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold">Our pharmaceutical range</h1>
+          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Our pharmaceutical range</h1>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
             Certified formulations across capsules, tablets, syrups, injections and specialty
             categories — trusted by clinicians and patients alike.

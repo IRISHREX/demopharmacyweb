@@ -25,7 +25,7 @@ function NotFoundComponent() {
       <div className="flex-1 flex items-center justify-center px-4 py-24">
         <div className="max-w-md text-center">
           <p className="text-sm font-medium tracking-widest text-primary uppercase">404</p>
-          <h1 className="mt-3 text-4xl">Page not found</h1>
+          <h1 className="mt-3 text-4xl gradient-heading">Page not found</h1>
           <p className="mt-3 text-muted-foreground">
             The page you're looking for doesn't exist or has been moved.
           </p>
@@ -111,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap",
       },
     ],
   }),
