@@ -53,6 +53,35 @@ export default function LiveBackground() {
       }
     }, { passive: true });
 
+    // Detect page luminance and pick palette
+    // - light bg  -> greenish grid
+    // - dark bg   -> yellowish grid
+    let palette = { a: "rgba(60,200,110,0.22)", b: "rgba(40,180,90,0.42)", cursor: "rgba(90,220,140,0.28)" };
+    const detectPalette = () => {
+      const bg = getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
+      const m = bg.match(/\d+(\.\d+)?/g);
+      if (!m) return;
+      const [r, g, b] = m.map(Number);
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      if (lum < 0.5) {
+        // dark -> yellow/amber neon
+        palette = {
+          a: "rgba(255,230,100,0.18)",
+          b: "rgba(255,210,60,0.38)",
+          cursor: "rgba(255,220,120,0.32)",
+        };
+      } else {
+        // light -> green neon
+        palette = {
+          a: "rgba(60,200,110,0.20)",
+          b: "rgba(40,180,90,0.40)",
+          cursor: "rgba(90,220,140,0.30)",
+        };
+      }
+    };
+    detectPalette();
+    const paletteInterval = window.setInterval(detectPalette, 1500);
+
     let raf = 0;
     let t = 0;
 
@@ -60,16 +89,23 @@ export default function LiveBackground() {
       t += 1;
       ctx.clearRect(0, 0, width, height);
 
-      // ensure the net remains visible on light and dark backgrounds
-      ctx.fillStyle = "rgba(0, 0, 0, 0.03)";
-      ctx.fillRect(0, 0, width, height);
-
-      // neon green net lines
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 1;
       ctx.lineCap = "round";
 
       const centerX = cursor.x;
       const centerY = cursor.y;
+
+      const strokeLine = (vertical: boolean) => {
+        const grad = vertical
+          ? ctx.createLinearGradient(0, 0, 0, height)
+          : ctx.createLinearGradient(0, 0, width, 0);
+        grad.addColorStop(0, palette.a);
+        grad.addColorStop(0.5, palette.b);
+        grad.addColorStop(1, palette.a);
+        ctx.strokeStyle = grad as unknown as string;
+        ctx.globalCompositeOperation = "lighter";
+        ctx.stroke();
+      };
 
       for (let row = -1; row <= rows; row++) {
         ctx.beginPath();
@@ -79,27 +115,15 @@ export default function LiveBackground() {
           const dx = x - centerX;
           const dy = y - centerY;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const influence = Math.max(0, 1 - dist / 260);
-          const wave = Math.sin((col + row) * 0.35 + t * 0.02) * 6;
-          const offsetY = wave * (0.25 + influence * 2.2);
-          const drawX = x;
-          const drawY = y + offsetY;
-
-          if (col === -1) ctx.moveTo(drawX, drawY);
-          else ctx.lineTo(drawX, drawY);
+          const influence = Math.max(0, 1 - dist / 240);
+          const wave = Math.sin((col + row) * 0.35 + t * 0.02) * 5;
+          const offsetY = wave * (0.2 + influence * 2);
+          if (col === -1) ctx.moveTo(x, y + offsetY);
+          else ctx.lineTo(x, y + offsetY);
         }
-
-        // stroke with neon gradient
-        const grad = ctx.createLinearGradient(0, 0, width, 0);
-        grad.addColorStop(0, "rgba(120,255,160,0.18)");
-        grad.addColorStop(0.5, "rgba(90,255,140,0.32)");
-        grad.addColorStop(1, "rgba(120,255,160,0.18)");
-        ctx.strokeStyle = grad as unknown as string;
-        ctx.globalCompositeOperation = "lighter";
-        ctx.stroke();
+        strokeLine(false);
       }
 
-      // vertical lines
       for (let col = -1; col <= cols; col++) {
         ctx.beginPath();
         for (let row = -1; row <= rows; row++) {
@@ -108,32 +132,22 @@ export default function LiveBackground() {
           const dx = x - centerX;
           const dy = y - centerY;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const influence = Math.max(0, 1 - dist / 260);
-          const wave = Math.cos((col + row) * 0.35 + t * 0.02) * 6;
-          const offsetX = wave * (0.25 + influence * 2.2);
-          const drawX = x + offsetX;
-          const drawY = y;
-
-          if (row === -1) ctx.moveTo(drawX, drawY);
-          else ctx.lineTo(drawX, drawY);
+          const influence = Math.max(0, 1 - dist / 240);
+          const wave = Math.cos((col + row) * 0.35 + t * 0.02) * 5;
+          const offsetX = wave * (0.2 + influence * 2);
+          if (row === -1) ctx.moveTo(x + offsetX, y);
+          else ctx.lineTo(x + offsetX, y);
         }
-        const grad = ctx.createLinearGradient(0, 0, 0, height);
-        grad.addColorStop(0, "rgba(120,255,160,0.18)");
-        grad.addColorStop(0.5, "rgba(90,255,140,0.32)");
-        grad.addColorStop(1, "rgba(120,255,160,0.18)");
-        ctx.strokeStyle = grad as unknown as string;
-        ctx.globalCompositeOperation = "lighter";
-        ctx.stroke();
+        strokeLine(true);
       }
 
-      // neon cursor glow
+      // cursor glow (sky blue accent — reads as "on cards" everywhere)
       if (centerX > -9000) {
-        const glowR = 120;
+        const glowR = 130;
         const g = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, glowR);
-        g.addColorStop(0, "rgba(255,200,120,0.26)");
-        g.addColorStop(0.12, "rgba(90,200,255,0.22)");
-        g.addColorStop(0.28, "rgba(30,120,255,0.08)");
-        g.addColorStop(1, "rgba(5,10,30,0)");
+        g.addColorStop(0, "rgba(120,200,255,0.30)");
+        g.addColorStop(0.35, "rgba(80,160,240,0.14)");
+        g.addColorStop(1, "rgba(0,0,0,0)");
         ctx.globalCompositeOperation = "lighter";
         ctx.fillStyle = g as unknown as string;
         ctx.fillRect(centerX - glowR, centerY - glowR, glowR * 2, glowR * 2);
@@ -142,6 +156,20 @@ export default function LiveBackground() {
 
       raf = requestAnimationFrame(draw);
     };
+
+    raf = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearInterval(paletteInterval);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 live-background-canvas" style={{ zIndex: 0 }} />;
+}
 
     raf = requestAnimationFrame(draw);
 
