@@ -170,16 +170,3 @@ export default function LiveBackground() {
 
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 live-background-canvas" style={{ zIndex: 0 }} />;
 }
-
-    raf = requestAnimationFrame(draw);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 live-background-canvas" />;
-}
