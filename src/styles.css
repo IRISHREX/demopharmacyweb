@@ -215,48 +215,53 @@
   .page-transition-wrapper {
     position: fixed;
     inset: 0;
-    z-index: 50;
-    pointer-events: none;
+    z-index: 60;
+    pointer-events: none; /* never blocks interaction */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
-    transition: opacity 0.35s ease;
-    --transition-overlay: 0;
-    --transition-flash: 0;
+    transition: opacity 0.25s ease;
   }
+  .page-transition-wrapper.active { opacity: 1; }
 
-  .page-transition-wrapper.active {
-    opacity: 1;
-    pointer-events: all;
+  .page-transition-loader {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at center,
+      rgba(140, 255, 154, 0.18) 0%,
+      rgba(140, 255, 154, 0.08) 45%,
+      rgba(140, 255, 154, 0.02) 70%,
+      transparent 100%
+    );
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
   .page-transition-canvas {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     display: block;
-    z-index: 0;
   }
 
-  .page-transition-backdrop {
+  .page-transition-label {
     position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: var(--transition-overlay, 0);
-    background: radial-gradient(circle at 25% 25%, rgba(120, 255, 140, 0.22), transparent 20%),
-      radial-gradient(circle at 75% 20%, rgba(74, 255, 123, 0.18), transparent 16%),
-      linear-gradient(180deg, rgba(6, 15, 18, 0.78), rgba(12, 24, 20, 0.98));
-    mix-blend-mode: normal;
-    pointer-events: none;
-    transition: opacity 0.18s ease;
-  }
-
-  .page-transition-flash {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    opacity: var(--transition-flash, 0);
-    background: radial-gradient(circle at center, rgba(148, 255, 160, 0.88) 0%, transparent 35%);
-    pointer-events: none;
-    transition: opacity 0.08s ease;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, #7cff8c 70%, var(--foreground) 30%);
+    text-shadow: 0 0 12px rgba(140, 255, 154, 0.5);
+    white-space: nowrap;
   }
 }
