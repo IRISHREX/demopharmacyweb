@@ -138,12 +138,13 @@ function Home() {
               className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:gap-2.5 transition-all"
             >
               Learn more about us <ArrowRight className="h-4 w-4" />
-                <Link
-                  to="/contact"
-                  className="btn inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:gap-2.5 transition-all"
-                >
+            </Link>
 
+          </div>
+        </div>
+      </section>
       {/* KEY PRODUCTS */}
+      
       <section className="py-24 bg-surface">
         <div className="container-page">
           <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
