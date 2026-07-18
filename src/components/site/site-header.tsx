@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Pill } from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 import logoImg from "@/assets/Zaxia_Logo.png";
 
 const nav = [
