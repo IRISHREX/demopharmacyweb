@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Pill } from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 import logoImg from "@/assets/Zaxia_Logo.png";
 
 const nav = [
@@ -14,6 +15,7 @@ const nav = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { isAdmin } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
@@ -52,7 +54,15 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-2">
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1.5 rounded-md border border-border/70 px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:border-primary/40"
+            >
+              <ShieldCheck className="h-4 w-4" /> Admin
+            </Link>
+          )}
           <Link
             to="/contact"
             className="inline-flex items-center rounded-md gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
