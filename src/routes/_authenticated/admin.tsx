@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { LayoutDashboard, Package, Inbox, Newspaper, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Package, Inbox, Newspaper, LogOut, ExternalLink, Briefcase } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 const nav: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }> = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/products", label: "Products", icon: Package },
+  { to: "/admin/careers", label: "Careers", icon: Briefcase },
   { to: "/admin/blog", label: "Blog", icon: Newspaper },
   { to: "/admin/inquiries", label: "Inquiries", icon: Inbox },
 ];

@@ -101,6 +101,51 @@ export type Database = {
         }
         Relationships: []
       }
+      job_vacancies: {
+        Row: {
+          created_at: string
+          department: string | null
+          description: string | null
+          employment_type: string | null
+          id: string
+          is_open: boolean
+          location: string | null
+          posted_at: string
+          requirements: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          description?: string | null
+          employment_type?: string | null
+          id?: string
+          is_open?: boolean
+          location?: string | null
+          posted_at?: string
+          requirements?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          description?: string | null
+          employment_type?: string | null
+          id?: string
+          is_open?: boolean
+          location?: string | null
+          posted_at?: string
+          requirements?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category_id: string | null

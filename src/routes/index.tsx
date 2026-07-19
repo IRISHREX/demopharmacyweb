@@ -5,7 +5,7 @@ import { fetchCategories, fetchFeaturedProducts } from "@/lib/catalog";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ProductCard } from "@/components/site/product-card";
 import heroImg from "@/assets/hero-pharmacy.jpg";
-import dnaHeroImg from "@/assets/dna-closeup.jpeg";
+import dnaHeroVideo from "@/assets/dna-closeup.mp4";
 import aboutImg from "@/assets/about-lab.jpg";
 import logoImg from "@/assets/Zaxia_Logo.png";
 
@@ -32,9 +32,19 @@ function Home() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden hero-landing shadow-[0_10px_20px_5px_rgba(2,6,23,0.55)]">
+          <video
+            src={dnaHeroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={heroImg}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `linear-gradient(45deg, color-mix(in oklab, var(--secondary-foreground) 85%, rgba(2, 6, 23, 0.95)) 0%, rgba(2, 6, 23, 0.6) 45%, rgba(2, 6, 23, 0) 60%), url(${dnaHeroImg})` }}
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(45deg, color-mix(in oklab, var(--secondary-foreground) 85%, rgba(2, 6, 23, 0.95)) 0%, rgba(2, 6, 23, 0.6) 45%, rgba(2, 6, 23, 0) 60%)" }}
           />
         <div className="container-page relative isolate overflow-hidden px-6 py-20 ">
           <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
