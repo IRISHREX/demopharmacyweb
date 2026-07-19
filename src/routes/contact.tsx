@@ -53,11 +53,11 @@ function Contact() {
 
   return (
     <>
-      <section className="gradient-hero">
+      <section className="gradient-brand text-primary-foreground">
         <div className="container-page py-16 md:py-20 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Contact</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground/80">Contact</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Let's talk healthcare.</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-4 text-lg text-primary-foreground/80">
             Distributor enquiries, product information, clinician partnerships — our team
             replies within one business day.
           </p>
@@ -139,7 +139,7 @@ function Contact() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center justify-center gap-2 rounded-md gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95 disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-full gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95 disabled:opacity-60"
               >
                 {submitting ? "Sending…" : <>Send message <Send className="h-4 w-4" /></>}
               </button>
