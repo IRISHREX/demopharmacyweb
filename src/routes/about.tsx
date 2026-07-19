@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/section-heading";
+import { SiteHeader } from "@/components/site/site-header";
 import { Users, FlaskConical, HeartPulse, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 import aboutImg from "@/assets/about-lab.jpg";
 
@@ -18,9 +19,10 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="gradient-hero">
+      <section className="gradient-hero pt-3">
+        <SiteHeader variant="default" />
         <div className="container-page py-20 md:py-28">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mt-8 md:mt-10">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">About Us</p>
             <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight gradient-heading">
               Healthcare, engineered around <span className="italic text-primary">trust.</span>
@@ -35,7 +37,7 @@ function About() {
       </section>
 
       <section className="py-24">
-        <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center">
+        <div className="container-page grid gap-14 rounded-[2rem] border border-white/20 bg-white/10 p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:grid-cols-2 lg:items-center lg:p-12">
           <div>
             <SectionHeading
               eyebrow="Our mission"
@@ -93,7 +95,7 @@ function About() {
               { icon: ShieldCheck, title: "Regulatory & quality", body: "Compliant with pharmaceutical standards, audited for consistency and safety." },
               { icon: Sparkles, title: "Patient-centered care", body: "From consult to follow-up — support that extends well past dispensation." },
             ].map(({ icon: Icon, title, body }) => (
-              <div key={title} className="rounded-2xl border border-border/60 bg-card p-7">
+              <div key={title} className="rounded-2xl border border-border/60 bg-card p-7 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)]">
                 <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="h-5 w-5" />
                 </div>

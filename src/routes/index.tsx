@@ -5,7 +5,7 @@ import { fetchCategories, fetchFeaturedProducts } from "@/lib/catalog";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ProductCard } from "@/components/site/product-card";
 import heroImg from "@/assets/hero-pharmacy.jpg";
-import dnaHeroImg from "@/assets/dna-closeup.jpg";
+import dnaHeroImg from "@/assets/dna-closeup.jpeg";
 import aboutImg from "@/assets/about-lab.jpg";
 import logoImg from "@/assets/Zaxia_Logo.png";
 
@@ -56,14 +56,14 @@ function Home() {
                 </a>
               ))}
             </div>
-            <div className="relative z-10 text-white">
+            <div className="relative z-10 text-white mt-20">
               <h1 className="mt-6 text-transparent bg-clip-text bg-linear-to-r from-slate-100 via-sky-200 to-cyan-200 text-5xl sm:text-6xl xl:text-7xl font-semibold leading-tight tracking-[-0.03em]">
                 Unlock your
                 <span className="block text-transparent bg-clip-text bg-linear-to-r from-slate-100 via-sky-200 to-cyan-200 mt-2">
                   Longevity
                 </span>
               </h1>
-              <p className="mt-6 max-w-xl text-base sm:text-lg leading-8 text-slate-200/80">
+              <p className="mt-6 max-w-xl text-base sm:text-lg leading-8 text-white">
                 All our supplements are certified and clinically tested to support optimal health and longevity.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
@@ -125,7 +125,7 @@ function Home() {
 
       {/* ABOUT SNIPPET */}
       <section className="py-24">
-        <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center">
+        <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center rounded-[2rem] border border-white/20 bg-white/10 p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:p-12">
           <img
             src={aboutImg}
             alt="Modern pharmaceutical laboratory"
@@ -216,7 +216,7 @@ function Home() {
               { icon: Award, title: "Top-tier partner facilities", body: "We work with accredited hospitals and clinics that meet international quality standards." },
               { icon: Clock, title: "Comprehensive care", body: "Visa guidance, cost estimates, follow-up and rehabilitation — support at every step." },
             ].map(({ icon: Icon, title, body }) => (
-              <div key={title} className="rounded-2xl border border-border/60 bg-card p-8">
+              <div key={title} className="rounded-2xl border border-border/60 bg-card p-8 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)]">
                 <div className="grid h-12 w-12 place-items-center rounded-xl gradient-brand text-primary-foreground shadow-soft">
                   <Icon className="h-6 w-6" />
                 </div>

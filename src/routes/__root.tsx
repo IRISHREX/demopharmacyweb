@@ -141,13 +141,14 @@ function RootComponent() {
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isHome = pathname === "/";
+  const isAbout = pathname === "/about";
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen relative overflow-hidden flex flex-col bg-background">
         <LiveBackground />
-        <SiteHeader variant={isHome ? "hero" : "default"} />
         <main className="relative z-10 flex-1">
+          {!isAbout && <SiteHeader variant={isHome ? "hero" : "default"} />}
           <Outlet />
         </main>
         <SiteFooter />

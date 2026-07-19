@@ -31,7 +31,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
           <img
             src={logoImg}
             alt="Zaxia Healthcare logo"
-            className="h-20 w-20 rounded-2xl object-contain shadow-soft"
+            className="h-20 w-20 rounded-2xl object-contain "
           />
         </Link>
 
