@@ -1,0 +1,111 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Briefcase, MapPin, Clock, Building2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+export const Route = createFileRoute("/careers")({
+  component: Careers,
+  head: () => ({
+    meta: [
+      { title: "Careers at Zaxia Healthcare — Join our team" },
+      { name: "description", content: "Explore open roles at Zaxia Healthcare Pvt. Ltd. Sales, QC, R&D and operations positions across India." },
+      { property: "og:title", content: "Careers at Zaxia Healthcare" },
+      { property: "og:description", content: "Grow with a purpose-driven pharmaceutical company." },
+    ],
+  }),
+});
+
+interface Vacancy {
+  id: string;
+  slug: string;
+  title: string;
+  department: string | null;
+  location: string | null;
+  employment_type: string | null;
+  description: string | null;
+  requirements: string | null;
+  posted_at: string;
+}
+
+async function fetchVacancies(): Promise<Vacancy[]> {
+  const { data, error } = await supabase
+    .from("job_vacancies")
+    .select("id, slug, title, department, location, employment_type, description, requirements, posted_at")
+    .eq("is_open", true)
+    .order("posted_at", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
+function Careers() {
+  const q = useQuery({ queryKey: ["careers"], queryFn: fetchVacancies });
+
+  return (
+    <>
+      <section className="gradient-brand text-primary-foreground">
+        <div className="container-page py-16 md:py-20 max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground/80">Careers</p>
+          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Build a healthier tomorrow with us.</h1>
+          <p className="mt-4 text-lg text-primary-foreground/80">
+            Join Zaxia Healthcare — a growing pharma company where quality, science and people come first.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="container-page">
+          <div className="mb-10 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-semibold gradient-heading">Open positions</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {q.data ? `${q.data.length} role${q.data.length === 1 ? "" : "s"} currently open` : "Loading…"}
+              </p>
+            </div>
+          </div>
+
+          {q.isLoading && <p className="text-sm text-muted-foreground">Loading roles…</p>}
+          {q.isError && <p className="text-sm text-destructive">Could not load vacancies.</p>}
+          {q.data && q.data.length === 0 && (
+            <div className="rounded-2xl border border-border/60 bg-card p-10 text-center">
+              <Briefcase className="mx-auto h-8 w-8 text-primary" />
+              <p className="mt-3 font-medium">No open positions right now</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Check back soon or email <a className="text-primary hover:underline" href="mailto:zaxiahealthcare@gmail.com">zaxiahealthcare@gmail.com</a>.
+              </p>
+            </div>
+          )}
+
+          <div className="grid gap-4">
+            {q.data?.map((v) => (
+              <article key={v.id} className="rounded-2xl border border-border/60 bg-card p-6 md:p-7 shadow-soft transition hover:border-primary/40">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-xl font-semibold">{v.title}</h3>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                      {v.department && <span className="inline-flex items-center gap-1.5"><Building2 className="h-4 w-4" />{v.department}</span>}
+                      {v.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4" />{v.location}</span>}
+                      {v.employment_type && <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{v.employment_type}</span>}
+                    </div>
+                  </div>
+                  <a
+                    href={`mailto:zaxiahealthcare@gmail.com?subject=${encodeURIComponent("Application: " + v.title)}`}
+                    className="inline-flex items-center rounded-full gradient-brand px-5 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
+                  >
+                    Apply
+                  </a>
+                </div>
+                {v.description && <p className="mt-4 text-sm leading-relaxed text-foreground/80">{v.description}</p>}
+                {v.requirements && (
+                  <div className="mt-3 text-sm">
+                    <span className="font-medium">Requirements: </span>
+                    <span className="text-muted-foreground">{v.requirements}</span>
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
