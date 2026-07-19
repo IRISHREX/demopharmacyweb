@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { OtpGate, isPhoneVerified } from "@/components/site/otp-gate";
 
 export const Route = createFileRoute("/contact")({
   component: Contact,
@@ -17,38 +18,41 @@ export const Route = createFileRoute("/contact")({
   }),
 });
 
-const schema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(120),
+// Zaxia registered office
+const OFFICE_ADDRESS = "127/24, Dhankal, Hatiara, Kolkata – 700157, West Bengal, India";
+const MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(OFFICE_ADDRESS)}&output=embed`;
+const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(OFFICE_ADDRESS)}`;
+
+const messageSchema = z.object({
   email: z.string().trim().email("Enter a valid email").max(200),
-  phone: z.string().trim().max(40).optional().or(z.literal("")),
   message: z.string().trim().min(5, "Message is too short").max(4000),
 });
 
 function Contact() {
+  const existing = typeof window !== "undefined" ? isPhoneVerified() : null;
+  const [verified, setVerified] = useState<{ name: string; phone: string } | null>(existing);
+  const [mapUnlocked, setMapUnlocked] = useState<boolean>(Boolean(existing));
+  const [wantsMap, setWantsMap] = useState(false);
+
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ email: "", message: "" });
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse(form);
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
-      return;
-    }
+    if (!verified) return toast.error("Please verify your mobile number first.");
+    const parsed = messageSchema.safeParse(form);
+    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
     setSubmitting(true);
     const { error } = await supabase.from("inquiries").insert({
-      name: parsed.data.name,
+      name: verified.name || "Guest",
       email: parsed.data.email,
-      phone: parsed.data.phone || null,
+      phone: verified.phone,
       message: parsed.data.message,
     });
     setSubmitting(false);
-    if (error) {
-      toast.error("Could not send message. Please try again.");
-      return;
-    }
+    if (error) return toast.error("Could not send message. Please try again.");
     toast.success("Thanks! We'll be in touch shortly.");
-    setForm({ name: "", email: "", phone: "", message: "" });
+    setForm({ email: "", message: "" });
   }
 
   return (
@@ -83,68 +87,119 @@ function Contact() {
             <p className="text-xs text-muted-foreground pt-2">Registered with RoC-Kolkata</p>
           </div>
 
-          <form
-            onSubmit={onSubmit}
-            className="lg:col-span-3 rounded-2xl border border-border/60 bg-card p-8 md:p-10 shadow-soft"
-          >
-            <h2 className="text-2xl font-semibold">Send an enquiry</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Fill in the form and we'll get back to you shortly.
-            </p>
-            <div className="mt-8 grid gap-5">
-              <Field label="Full name" required>
-                <input
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  required
-                  maxLength={120}
-                  className="input-base"
-                  placeholder="Dr. Priya Sharma"
-                />
-              </Field>
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field label="Email" required>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    required
-                    maxLength={200}
-                    className="input-base"
-                    placeholder="you@example.com"
-                  />
-                </Field>
-                <Field label="Phone">
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    maxLength={40}
-                    className="input-base"
-                    placeholder="+91 …"
-                  />
-                </Field>
-              </div>
-              <Field label="Message" required>
-                <textarea
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  required
-                  maxLength={4000}
-                  rows={5}
-                  className="input-base resize-none"
-                  placeholder="Tell us about your enquiry…"
-                />
-              </Field>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="inline-flex items-center justify-center gap-2 rounded-full gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95 disabled:opacity-60"
+          <div className="lg:col-span-3 space-y-8">
+            {!verified ? (
+              <OtpGate
+                title="Verify to send an enquiry"
+                description="Enter your name and mobile number — we'll send a one-time code via WhatsApp or SMS."
+                onVerified={(d) => { setVerified(d); setMapUnlocked(true); }}
+              />
+            ) : (
+              <form
+                onSubmit={onSubmit}
+                className="rounded-2xl border border-border/60 bg-card p-8 md:p-10 shadow-soft"
               >
-                {submitting ? "Sending…" : <>Send message <Send className="h-4 w-4" /></>}
-              </button>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl font-semibold">Send an enquiry</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Verified as <span className="font-medium text-foreground">{verified.name}</span> · {verified.phone}
+                    </p>
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                    <ShieldCheck className="h-3.5 w-3.5" /> Verified
+                  </span>
+                </div>
+                <div className="mt-8 grid gap-5">
+                  <Field label="Email" required>
+                    <input
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      required
+                      maxLength={200}
+                      className="input-base"
+                      placeholder="you@example.com"
+                    />
+                  </Field>
+                  <Field label="Message" required>
+                    <textarea
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      required
+                      maxLength={4000}
+                      rows={5}
+                      className="input-base resize-none"
+                      placeholder="Tell us about your enquiry…"
+                    />
+                  </Field>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full gradient-brand px-6 py-3 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95 disabled:opacity-60"
+                  >
+                    {submitting ? "Sending…" : <>Send message <Send className="h-4 w-4" /></>}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Google Map — gated by OTP */}
+      <section className="pb-24">
+        <div className="container-page">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-semibold gradient-heading">Find us</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Our registered office in Kolkata.</p>
             </div>
-          </form>
+            {mapUnlocked && (
+              <a href={MAPS_LINK} target="_blank" rel="noreferrer" className="text-sm text-primary hover:underline">
+                Open in Google Maps ↗
+              </a>
+            )}
+          </div>
+
+          <div className="mt-6 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-soft">
+            {mapUnlocked ? (
+              <iframe
+                title="Zaxia Healthcare office location"
+                src={MAPS_EMBED_SRC}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-[420px] w-full border-0"
+                allowFullScreen
+              />
+            ) : wantsMap ? (
+              <div className="p-6 md:p-8">
+                <OtpGate
+                  title="Verify to view our location"
+                  description="One-time mobile verification before we open Google Maps."
+                  onVerified={(d) => { setVerified(d); setMapUnlocked(true); }}
+                />
+              </div>
+            ) : (
+              <div className="grid place-items-center gap-4 p-12 text-center">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-primary/10 text-primary">
+                  <MapPin className="h-6 w-6" />
+                </span>
+                <div>
+                  <p className="text-lg font-semibold">Map access is protected</p>
+                  <p className="mt-1 text-sm text-muted-foreground max-w-md">
+                    Verify your mobile number once to view our office location on Google Maps.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setWantsMap(true)}
+                  className="inline-flex items-center gap-2 rounded-full gradient-brand px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
+                >
+                  <ShieldCheck className="h-4 w-4" /> Verify to view map
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
