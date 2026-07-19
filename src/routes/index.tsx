@@ -57,9 +57,9 @@ function Home() {
               ))}
             </div>
             <div className="relative z-10 text-white">
-              <h1 className="mt-6 text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-sky-200 to-cyan-200 text-5xl sm:text-6xl xl:text-7xl font-semibold leading-tight tracking-[-0.03em]">
+              <h1 className="mt-6 text-transparent bg-clip-text bg-linear-to-r from-slate-100 via-sky-200 to-cyan-200 text-5xl sm:text-6xl xl:text-7xl font-semibold leading-tight tracking-[-0.03em]">
                 Unlock your
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-sky-200 to-cyan-200 mt-2">
+                <span className="block text-transparent bg-clip-text bg-linear-to-r from-slate-100 via-sky-200 to-cyan-200 mt-2">
                   Longevity
                 </span>
               </h1>
@@ -71,13 +71,13 @@ function Home() {
                   to="/products"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-secondary-foreground shadow-[0_18px_40px_-24px_rgba(56,189,248,0.9)] hover:bg-sky-400"
                 >
-                  Start your program <ArrowRight className="h-4 w-4" />
+                  Explore products <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/contact"
                   className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-6 py-4 text-sm font-semibold text-slate-100 hover:bg-white/15"
                 >
-                  Visit store
+                  Talk to out team
                 </Link>
               </div>
               <dl className="mt-12 grid grid-cols-3 gap-4 max-w-md text-center">
@@ -132,7 +132,7 @@ function Home() {
             width={1400}
             height={1000}
             loading="lazy"
-            className="rounded-2xl shadow-soft w-full h-auto object-cover aspect-[4/3] order-2 lg:order-1"
+            className="rounded-2xl shadow-soft w-full h-auto object-cover aspect-4/3 order-2 lg:order-1"
           />
           <div className="order-1 lg:order-2">
             <SectionHeading
