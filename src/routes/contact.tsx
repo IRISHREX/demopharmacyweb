@@ -30,8 +30,9 @@ const messageSchema = z.object({
 
 function Contact() {
   const existing = typeof window !== "undefined" ? isPhoneVerified() : null;
-  const [verified, setVerified] = useState<{ name: string; phone: string } | null>(existing);
-  const [mapUnlocked, setMapUnlocked] = useState<boolean>(Boolean(existing));
+  const initial = existing ? { name: existing.name ?? "", phone: existing.phone } : null;
+  const [verified, setVerified] = useState<{ name: string; phone: string } | null>(initial);
+  const [mapUnlocked, setMapUnlocked] = useState<boolean>(Boolean(initial));
   const [wantsMap, setWantsMap] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
