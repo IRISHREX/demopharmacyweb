@@ -4,6 +4,7 @@ import { Menu, X, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import logoImg from "@/assets/Zaxia_Logo.png";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const nav = [
   { to: "/", label: "Home" },
