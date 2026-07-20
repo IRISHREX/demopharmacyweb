@@ -85,6 +85,7 @@ function AdminProducts() {
         ...values,
         description: values.description || null,
         image_url: values.image_url || null,
+        media_type: detectMediaKind(values.image_url || null),
       };
       if (editing) {
         const { error } = await supabase.from("products").update(payload).eq("id", editing.id);
