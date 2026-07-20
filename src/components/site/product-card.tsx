@@ -1,5 +1,6 @@
 import type { Product, Category } from "@/lib/catalog";
 import { Pill } from "lucide-react";
+import { MediaPreview } from "@/components/site/media-upload";
 
 // Import all product images with new names
 import calxiaD3Nano from "@/assets/products/CALXIA-D3 NANO SHOT.jpg";
