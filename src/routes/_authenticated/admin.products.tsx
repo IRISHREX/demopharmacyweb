@@ -249,8 +249,21 @@ function AdminProducts() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="image">Image URL</Label>
-              <Input id="image" type="url" placeholder="https://…" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+              <Label>Media (image / video / gif / 3D)</Label>
+              <MediaUpload
+                value={form.image_url || null}
+                onChange={(url) => setForm({ ...form, image_url: url ?? "" })}
+                folder="products"
+              />
+              <Input
+                type="url"
+                placeholder="…or paste a URL"
+                value={form.image_url ?? ""}
+                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+              />
+              {form.image_url && (
+                <p className="text-xs text-muted-foreground">Detected: {detectMediaKind(form.image_url)}</p>
+              )}
             </div>
             <div className="flex gap-6">
               <div className="flex items-center gap-2">
