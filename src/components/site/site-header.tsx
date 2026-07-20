@@ -27,11 +27,11 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
       className={cn(
         "z-40 rounded-full border",
         variant === "hero"
-          ? "absolute inset-x-0 top-3 mx-auto w-full max-w-[76rem] bg-white/100 shadow-soft"
-          : "sticky top-0 w-[80%] mx-auto bg-background/85 shadow-lg",
+          ? "absolute inset-x-0 top-3 mx-auto w-full w-[97%] max-w-[76rem] bg-white shadow-soft"
+          : "sticky top-3 max-w-[76rem] mx-auto bg-white shadow-lg",
       )}
     >
-      <div className={cn("container-page flex h-16 items-center justify-between", variant === "hero" ? "px-3" : "")}>
+      <div className={cn("container-page flex h-16 items-center justify-between bg-white rounded-full", variant === "hero" ? "px-3" : "")}>
         <Link to="/" className="flex items-center gap-3">
           <img
             src={logoSrc}
@@ -72,7 +72,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
           )}
           <Link
             to="/contact"
-            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border-0 border-border/100 hover:opacity-95 hover:border-2"
+            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border-0 border-2 border-white hover:opacity-95 hover:border-border"
           >
             Enquire now
           </Link>
@@ -88,7 +88,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border/60 bg-background">
+        <div className="md:hidden border-t border-border/60 bg-background rounded-2xl">
           <div className="container-page py-3 flex flex-col gap-1">
             {nav.map((item) => (
               <Link

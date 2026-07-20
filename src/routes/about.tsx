@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/site/section-heading";
-import { SiteHeader } from "@/components/site/site-header";
 import { Users, FlaskConical, HeartPulse, Globe2, ShieldCheck, Sparkles } from "lucide-react";
 import aboutImg from "@/assets/about-lab.jpg";
 
@@ -19,8 +18,7 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <section className="gradient-hero pt-3">
-        <SiteHeader variant="default" />
+      <section className="gradient-hero">
         <div className="container-page py-20 md:py-28">
           <div className="max-w-3xl mt-8 md:mt-10">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">About Us</p>

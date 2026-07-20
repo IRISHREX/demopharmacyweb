@@ -45,11 +45,11 @@ function Products() {
 
   return (
     <>
-      <section className="gradient-hero">
+      <section className="gradient-brand text-primary-foreground rounded-b-2xl md:rounded-2xl md:m-1">
         <div className="container-page py-16 md:py-20">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Product Catalog</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground mt-16">Product Catalog</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Our pharmaceutical range</h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="mt-4 max-w-2xl text-lg text-primary-foreground">
             Certified formulations across capsules, tablets, syrups, injections and specialty
             categories — trusted by clinicians and patients alike.
           </p>
