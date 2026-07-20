@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { z } from "zod";
+import { MediaUpload, detectMediaKind } from "@/components/site/media-upload";
 
 export const Route = createFileRoute("/_authenticated/admin/products")({
   component: AdminProducts,
@@ -21,7 +22,7 @@ const schema = z.object({
   slug: z.string().trim().min(1).max(200).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
   description: z.string().trim().max(2000).optional().or(z.literal("")),
   price_inr: z.number().nonnegative().nullable(),
-  image_url: z.string().trim().url().max(500).optional().or(z.literal("")),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")),
   category_id: z.string().uuid().nullable(),
   in_stock: z.boolean(),
   featured: z.boolean(),
@@ -84,6 +85,7 @@ function AdminProducts() {
         ...values,
         description: values.description || null,
         image_url: values.image_url || null,
+        media_type: detectMediaKind(values.image_url || null),
       };
       if (editing) {
         const { error } = await supabase.from("products").update(payload).eq("id", editing.id);
@@ -248,8 +250,21 @@ function AdminProducts() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="image">Image URL</Label>
-              <Input id="image" type="url" placeholder="https://…" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+              <Label>Media (image / video / gif / 3D)</Label>
+              <MediaUpload
+                value={form.image_url || null}
+                onChange={(url) => setForm({ ...form, image_url: url ?? "" })}
+                folder="products"
+              />
+              <Input
+                type="url"
+                placeholder="…or paste a URL"
+                value={form.image_url ?? ""}
+                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+              />
+              {form.image_url && (
+                <p className="text-xs text-muted-foreground">Detected: {detectMediaKind(form.image_url)}</p>
+              )}
             </div>
             <div className="flex gap-6">
               <div className="flex items-center gap-2">
