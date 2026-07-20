@@ -42,11 +42,11 @@ function Careers() {
 
   return (
     <>
-      <section className="gradient-brand text-primary-foreground">
-        <div className="container-page py-16 md:py-20 max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground/80">Careers</p>
+      <section className="gradient-brand text-primary-foreground rounded-b-2xl md:rounded-2xl md:m-1">
+        <div className="container-page py-16 md:py-20 max-w-3xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground mt-16">Careers</p>
           <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Build a healthier tomorrow with us.</h1>
-          <p className="mt-4 text-lg text-primary-foreground/80">
+          <p className="mt-4 text-lg text-primary-foreground">
             Join Zaxia Healthcare — a growing pharma company where quality, science and people come first.
           </p>
         </div>

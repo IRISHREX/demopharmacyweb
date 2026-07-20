@@ -1,17 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, Phone, MapPin } from "lucide-react";
-import logoImg from "@/assets/Zaxia_Logo.png";
+import logoImg from "@/assets/ZAXIA-LOGO-2.webp";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 rounded-t-[2rem] border-t bg-primary text-primary-foreground shadow-[0_32px_90px_-56px_rgba(64, 224, 255, 0.45)] backdrop-blur-xl">
+    <footer className="mt-24 rounded-t-2xl md:rounded-2xl md:m-1 border-t bg-primary text-primary-foreground shadow-[0_32px_90px_-56px_rgba(64, 224, 255, 0.45)] backdrop-blur-xl">
       <div className="container-page py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3">
             <img
               src={logoImg}
               alt="Zaxia Healthcare logo"
-              className="h-18 w-18 rounded-2xl border border-white/10 bg-white/10 object-contain shadow-soft"
+              className="h-22 rounded-2xl  object-contain shadow-soft"
             />
           </div>
           <p className="mt-4 max-w-md text-sm text-primary-foreground/80 leading-relaxed">
@@ -28,6 +28,7 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5 text-sm text-primary-foreground/80">
             <li><Link to="/" className="hover:text-primary-foreground">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary-foreground">About Us</Link></li>
+            <li><Link to="/careers" className="hover:text-primary-foreground">Careers</Link></li>
             <li><Link to="/products" className="hover:text-primary-foreground">Products</Link></li>
             <li><Link to="/contact" className="hover:text-primary-foreground">Contact</Link></li>
           </ul>

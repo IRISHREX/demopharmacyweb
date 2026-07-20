@@ -185,7 +185,6 @@
     radial-gradient(circle at 15% 18%, rgba(56, 189, 248, 0.18), transparent 24%),
     radial-gradient(circle at 90% 25%, rgba(59, 130, 246, 0.14), transparent 20%),
     linear-gradient(180deg, #041138, #0c2f6c 35%, #041138 100%);
-    border-radius: 0 0 2rem 2rem;
 }
 
 @utility gradient-brand {

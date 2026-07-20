@@ -4,7 +4,7 @@ import { ArrowRight, ShieldCheck, Clock, Globe2, Award, Sparkles, Facebook, Twit
 import { fetchCategories, fetchFeaturedProducts } from "@/lib/catalog";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ProductCard } from "@/components/site/product-card";
-import heroImg from "@/assets/hero-pharmacy.jpg";
+import heroImg from "@/assets/dna-closeup.jpeg";
 import dnaHeroVideo from "@/assets/dna-closeup.mp4";
 import aboutImg from "@/assets/about-lab.jpg";
 import logoImg from "@/assets/Zaxia_Logo.png";
@@ -31,7 +31,7 @@ function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden hero-landing shadow-[0_10px_20px_5px_rgba(2,6,23,0.55)]">
+      <section className="relative overflow-hidden hero-landing rounded-b-4xl shadow-[0_10px_20px_5px_rgba(2,6,23,0.55)]">
           <video
             src={dnaHeroVideo}
             autoPlay
@@ -48,24 +48,6 @@ function Home() {
           />
         <div className="container-page relative isolate overflow-hidden px-6 py-20 ">
           <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div className="absolute bottom-0 right-0 z-20 flex items-center gap-3">
-              {[
-                { href: "https://www.facebook.com", icon: Facebook, label: "Facebook" },
-                { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-                { href: "https://www.linkedin.com", icon: Linkedin, label: "LinkedIn" },
-              ].map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={label}
-                  className="grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white text-primary shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-50"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
             <div className="relative z-10 text-white mt-20">
               <h1 className="mt-6 text-transparent bg-clip-text bg-linear-to-r from-slate-100 via-sky-200 to-cyan-200 text-5xl sm:text-6xl xl:text-7xl font-semibold leading-tight tracking-[-0.03em]">
                 Unlock your
@@ -97,45 +79,37 @@ function Home() {
                   ["Safe", "Medicine-grade quality"],
                 ].map(([n, l]) => (
                   <div key={l as string} className="rounded-3xl border border-white/10 bg-white/5 p-4">
-                    <dt className="text-3xl font-semibold text-white">{n}</dt>
+                    <dt className="text-2xl md:text-3xl font-semibold text-white">{n}</dt>
                     <dd className="mt-1 text-xs uppercase tracking-[0.2em] text-sky-200/70">{l}</dd>
                   </div>
                 ))}
               </dl>
             </div>
-
-            {/* <div className="relative z-10">
-              <div className="absolute -right-10 top-10 h-52 w-52 rounded-full bg-cyan-400/10 blur-3xl" />
-              <div className="absolute left-0 bottom-16 h-44 w-44 rounded-full bg-sky-500/10 blur-3xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.55)]">
-                <img
-                  src={dnaHeroImg}
-                  alt="DNA close-up background"
-                  width={1600}
-                  height={1200}
-                  className="h-[560px] w-full object-cover"
-                />
-                <div className="absolute left-6 top-6 rounded-full border border-white/20 bg-slate-950/50 px-4 py-2 text-sm font-medium text-slate-100 backdrop-blur-sm">
-                  Gene X Longevity
-                </div>
-                <div className="absolute inset-x-6 bottom-6 rounded-[2rem] border border-white/15 bg-slate-950/80 p-6 backdrop-blur-xl">
-                  <div className="flex items-center gap-4">
-                    <div className="h-14 w-14 rounded-full bg-gradient-to-br from-sky-400 via-cyan-300 to-slate-100 shadow-[0_16px_40px_-24px_rgba(56,189,248,0.9)]" />
-                    <div>
-                      <p className="text-sm uppercase tracking-[0.22em] text-slate-300/80">Featured formula</p>
-                      <p className="mt-1 text-xl font-semibold text-white">Advanced longevity complex</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
+            <div className="z-20 flex items-end justify-center gap-3 mt-auto md:justify-end">
+              {[
+                { href: "https://www.facebook.com", icon: Facebook, label: "Facebook" },
+                { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
+                { href: "https://www.linkedin.com", icon: Linkedin, label: "LinkedIn" },
+              ].map(({ href, icon: Icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  className="grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white text-primary shadow-lg transition hover:-translate-y-0.5 hover:bg-sky-50"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ABOUT SNIPPET */}
       <section className="py-24">
-        <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center rounded-[2rem] border border-white/20 bg-white/10 p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:p-12">
+        <div className="container-page grid gap-14 lg:grid-cols-2 lg:items-center rounded-4xl border border-white/20 bg-white/10 p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] backdrop-blur-xl lg:p-12">
           <img
             src={aboutImg}
             alt="Modern pharmaceutical laboratory"
@@ -212,8 +186,8 @@ function Home() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-24">
-        <div className="container-page">
+      <section className="py-24 gradient-hero text-primary-foreground">
+        <div className="container-page p-1 rounded-2xl ">
           <SectionHeading
             align="center"
             eyebrow="Why Zaxia"
@@ -239,27 +213,27 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="pb-24">
-        <div className="container-page">
-          <div className="relative overflow-hidden rounded-3xl gradient-brand px-8 py-16 md:px-16 md:py-20 text-primary-foreground">
+      <section className="py-24">
+        <div className="container-page p-0 rounded-2xl shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)]">
+          <div className="relative overflow-hidden rounded-3xl bg-primary-foreground px-8 py-16 md:px-16 md:py-20 text-primary shhadow-">
             <div className="relative max-w-2xl">
               <h2 className="text-3xl sm:text-4xl font-semibold text-primary-foreground gradient-heading">
                 Partner with a healthcare team you can trust.
               </h2>
-              <p className="mt-4 text-primary-foreground/85 text-lg">
+              <p className="mt-4 text-muted-foreground/85 text-lg">
                 Distributor enquiries, clinician partnerships and product information — we're
                 here to help.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-card px-6 py-3 text-sm font-medium text-primary hover:opacity-95"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:opacity-90"
                 >
                   Contact us <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
                   href="tel:+918017190377"
-                  className="inline-flex items-center rounded-full border border-primary-foreground/30 px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/10"
+                  className="inline-flex items-center rounded-full border border-muted-foreground/30 px-6 py-3 text-sm font-medium text-muted-foreground hover:bg-muted-foreground/10"
                 >
                   Call 80171-90377
                 </a>

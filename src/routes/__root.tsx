@@ -147,8 +147,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen relative overflow-hidden flex flex-col bg-background">
         <LiveBackground />
+        <SiteHeader variant={"hero"} />
         <main className="relative z-10 flex-1">
-          {!isAbout && <SiteHeader variant={isHome ? "hero" : "default"} />}
           <Outlet />
         </main>
         <SiteFooter />
