@@ -22,7 +22,7 @@ const schema = z.object({
   slug: z.string().trim().min(1).max(200).regex(/^[a-z0-9-]+$/, "lowercase letters, numbers, hyphens only"),
   description: z.string().trim().max(2000).optional().or(z.literal("")),
   price_inr: z.number().nonnegative().nullable(),
-  image_url: z.string().trim().url().max(500).optional().or(z.literal("")),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")),
   category_id: z.string().uuid().nullable(),
   in_stock: z.boolean(),
   featured: z.boolean(),
