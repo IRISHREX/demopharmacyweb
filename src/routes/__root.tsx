@@ -146,6 +146,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeApplier />
       <div className="min-h-screen relative overflow-hidden flex flex-col bg-background">
         <LiveBackground />
         <main className="relative z-10 flex-1">
