@@ -22,6 +22,7 @@ const nav: Array<{ to: string; label: string; icon: typeof LayoutDashboard; exac
   { to: "/admin/careers", label: "Careers", icon: Briefcase },
   { to: "/admin/blog", label: "Blog", icon: Newspaper },
   { to: "/admin/inquiries", label: "Inquiries", icon: Inbox },
+  { to: "/admin/settings", label: "Site settings", icon: Settings },
 ];
 
 function AdminLayout() {
