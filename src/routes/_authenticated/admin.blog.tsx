@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { z } from "zod";
+import { MediaUpload, detectMediaKind } from "@/components/site/media-upload";
 
 export const Route = createFileRoute("/_authenticated/admin/blog")({
   component: AdminBlog,
