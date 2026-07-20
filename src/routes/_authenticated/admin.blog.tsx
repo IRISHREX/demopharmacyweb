@@ -170,8 +170,14 @@ function AdminBlog() {
               <Textarea id="excerpt" rows={2} value={form.excerpt ?? ""} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} /></div>
             <div className="space-y-1.5"><Label htmlFor="content">Content</Label>
               <Textarea id="content" rows={8} value={form.content ?? ""} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
-            <div className="space-y-1.5"><Label htmlFor="image">Cover image URL</Label>
-              <Input id="image" type="url" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} /></div>
+            <div className="space-y-1.5"><Label>Cover media (image / video / gif / 3D)</Label>
+              <MediaUpload
+                value={form.image_url || null}
+                onChange={(url) => setForm({ ...form, image_url: url ?? "" })}
+                folder="blog"
+              />
+              <Input type="url" placeholder="…or paste a URL" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+            </div>
             <div className="flex items-center gap-2">
               <Switch id="pub" checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} />
               <Label htmlFor="pub">Published</Label>
