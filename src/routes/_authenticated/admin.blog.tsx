@@ -64,6 +64,7 @@ function AdminBlog() {
         excerpt: v.excerpt || null,
         content: v.content || null,
         image_url: v.image_url || null,
+        media_type: detectMediaKind(v.image_url || null),
         published_at: v.published ? new Date().toISOString() : null,
       };
       if (editing) {
