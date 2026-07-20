@@ -23,6 +23,16 @@ function hexToHsl(hex: string): string | null {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
+function getReadableForegound(hex: string): string {
+  const m = hex.trim().replace("#", "");
+  if (!/^[0-9a-fA-F]{6}$/.test(m)) return "oklch(0.99 0.005 240)";
+  const r = parseInt(m.slice(0, 2), 16) / 255;
+  const g = parseInt(m.slice(2, 4), 16) / 255;
+  const b = parseInt(m.slice(4, 6), 16) / 255;
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.6 ? "oklch(0.15 0.03 255)" : "oklch(0.99 0.005 240)";
+}
+
 export function ThemeApplier() {
   const { data } = useSiteSettings();
   useEffect(() => {
@@ -34,10 +44,12 @@ export function ThemeApplier() {
     if (primary) {
       const hsl = hexToHsl(primary);
       if (hsl) {
-        root.style.setProperty("--primary", hsl);
-        root.style.setProperty("--ring", hsl);
+        root.style.setProperty("--primary", `hsl(${hsl})`);
+        root.style.setProperty("--primary-foreground", getReadableForegound(primary));
+        root.style.setProperty("--ring", `hsl(${hsl})`);
       } else {
         root.style.setProperty("--primary", primary);
+        root.style.setProperty("--primary-foreground", getReadableForegound(primary));
       }
     }
   }, [data?.theme?.mode, data?.theme?.primary]);

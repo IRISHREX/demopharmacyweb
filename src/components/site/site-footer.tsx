@@ -14,7 +14,7 @@ export function SiteFooter() {
   const quoteBy = settings?.quote_author;
 
   return (
-    <footer className="mt-24 rounded-t-[2rem] border-t bg-primary text-primary-foreground backdrop-blur-xl">
+    <footer className="mt-24 rounded-t-[2rem] border-t bg-primary text-primary-foreground shadow-[0_32px_90px_-56px_rgba(64,224,255,0.45)] backdrop-blur-xl">
       {quote && (
         <div className="container-page pt-10">
           <blockquote className="rounded-2xl border border-white/20 bg-white/5 p-5 text-center">
@@ -39,7 +39,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wider">Explore</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground">Explore</h4>
           <ul className="mt-4 space-y-2.5 text-sm text-primary-foreground/80">
             <li><Link to="/" className="hover:text-primary-foreground">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary-foreground">About Us</Link></li>
@@ -50,18 +50,18 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-wider">Reach us</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground">Reach us</h4>
           <ul className="mt-4 space-y-3 text-sm text-primary-foreground/80">
             <li className="flex gap-2.5">
-              <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+              <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-primary-foreground" />
               <span className="whitespace-pre-line">{address}</span>
             </li>
             <li className="flex gap-2.5">
-              <Phone className="h-4 w-4 mt-0.5 shrink-0" />
+              <Phone className="h-4 w-4 mt-0.5 shrink-0 text-primary-foreground" />
               <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary-foreground">{phone}</a>
             </li>
             <li className="flex gap-2.5">
-              <Mail className="h-4 w-4 mt-0.5 shrink-0" />
+              <Mail className="h-4 w-4 mt-0.5 shrink-0 text-primary-foreground" />
               <a href={`mailto:${email}`} className="hover:text-primary-foreground break-all">{email}</a>
             </li>
           </ul>

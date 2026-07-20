@@ -17,7 +17,7 @@ const nav = [
 export function SiteHeader({ variant = "default" }: { variant?: "default" | "hero" }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, adminChecked } = useAuth();
   const { data: settings } = useSiteSettings();
   const logoSrc = settings?.logo_url || logoImg;
   const siteName = settings?.site_name || "Zaxia Healthcare";
