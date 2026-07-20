@@ -22,7 +22,7 @@ const schema = z.object({
   slug: z.string().trim().min(1).max(200).regex(/^[a-z0-9-]+$/),
   excerpt: z.string().trim().max(400).optional().or(z.literal("")),
   content: z.string().trim().max(20000).optional().or(z.literal("")),
-  image_url: z.string().trim().url().max(500).optional().or(z.literal("")),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")),
   published: z.boolean(),
 });
 type Form = z.infer<typeof schema>;
