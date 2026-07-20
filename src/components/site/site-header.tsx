@@ -34,10 +34,11 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
       <div className={cn("container-page flex h-16 items-center justify-between", variant === "hero" ? "px-3" : "")}>
         <Link to="/" className="flex items-center gap-3">
           <img
-            src={logoImg}
-            alt="Zaxia Healthcare logo"
+            src={logoSrc}
+            alt={`${siteName} logo`}
             className="h-20 w-20 rounded-2xl object-contain "
           />
+          <span className="sr-only">{siteName}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1 ">
