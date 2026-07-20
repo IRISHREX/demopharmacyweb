@@ -31,10 +31,15 @@ export function useAuth(): AuthState {
     let cancelled = false;
     if (!session?.user) {
       setIsAdmin(false);
-      setAdminChecked(true);
+      // Do not mark the initial anonymous render as checked. getSession() may
+      // resolve immediately afterwards with a signed-in user; marking it ready
+      // here lets the admin route reject that user before the role query runs.
+      if (!loading) setAdminChecked(true);
       return;
     }
+
     setAdminChecked(false);
+    setIsAdmin(false);
     supabase
       .from("user_roles")
       .select("role")
@@ -46,10 +51,11 @@ export function useAuth(): AuthState {
         setIsAdmin(Boolean(data));
         setAdminChecked(true);
       });
+
     return () => {
       cancelled = true;
     };
-  }, [session?.user?.id]);
+  }, [loading, session?.user?.id, session?.user?.email]);
 
   return {
     session,

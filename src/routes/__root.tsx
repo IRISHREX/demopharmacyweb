@@ -18,6 +18,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeApplier } from "@/components/site/theme-applier";
 
 function NotFoundComponent() {
   return (
@@ -145,6 +146,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeApplier />
       <div className="min-h-screen relative overflow-hidden flex flex-col bg-background">
         <LiveBackground />
         <SiteHeader variant={"hero"} />

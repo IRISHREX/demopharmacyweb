@@ -1,5 +1,6 @@
 import type { Product, Category } from "@/lib/catalog";
 import { Pill } from "lucide-react";
+import { MediaPreview } from "@/components/site/media-upload";
 
 // Import all product images with new names
 import calxiaD3Nano from "@/assets/products/CALXIA-D3 NANO SHOT.jpg";
@@ -89,17 +90,13 @@ interface Props {
 }
 
 export function ProductCard({ product, category }: Props) {
-  const productImage = getProductImage(product.name);
+  const productImage = product.image_url || getProductImage(product.name);
 
   return (
     <article className="group relative flex flex-col rounded-2xl border border-border/70 bg-card overflow-hidden transition-all duration-500 card-3d shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] hover:border-primary/30 hover:shadow-elegant">
       {productImage ? (
         <div className="relative h-56 w-full overflow-hidden bg-white flex items-center justify-center">
-          <img
-            src={productImage}
-            alt={product.name}
-            className="w-full object-contain p-4"
-          />
+          <MediaPreview url={productImage} className="w-full h-full object-contain p-4" />
         </div>
       ) : (
         <div className="mb-5 flex h-56 w-full items-center justify-center bg-primary/5 rounded-t-[2rem]">

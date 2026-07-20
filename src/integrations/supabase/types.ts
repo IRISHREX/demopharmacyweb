@@ -21,6 +21,7 @@ export type Database = {
           excerpt: string | null
           id: string
           image_url: string | null
+          media_type: string
           published_at: string | null
           slug: string
           title: string
@@ -32,6 +33,7 @@ export type Database = {
           excerpt?: string | null
           id?: string
           image_url?: string | null
+          media_type?: string
           published_at?: string | null
           slug: string
           title: string
@@ -43,6 +45,7 @@ export type Database = {
           excerpt?: string | null
           id?: string
           image_url?: string | null
+          media_type?: string
           published_at?: string | null
           slug?: string
           title?: string
@@ -155,6 +158,7 @@ export type Database = {
           id: string
           image_url: string | null
           in_stock: boolean
+          media_type: string
           name: string
           price_inr: number | null
           slug: string
@@ -168,6 +172,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           in_stock?: boolean
+          media_type?: string
           name: string
           price_inr?: number | null
           slug: string
@@ -181,6 +186,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           in_stock?: boolean
+          media_type?: string
           name?: string
           price_inr?: number | null
           slug?: string
@@ -195,6 +201,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      site_settings: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          google_maps_url: string | null
+          id: string
+          latitude: number | null
+          logo_url: string | null
+          longitude: number | null
+          phone: string | null
+          quote_author: string | null
+          quote_text: string | null
+          singleton: boolean
+          site_name: string
+          tagline: string | null
+          theme: Json
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          google_maps_url?: string | null
+          id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
+          phone?: string | null
+          quote_author?: string | null
+          quote_text?: string | null
+          singleton?: boolean
+          site_name?: string
+          tagline?: string | null
+          theme?: Json
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          google_maps_url?: string | null
+          id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
+          phone?: string | null
+          quote_author?: string | null
+          quote_text?: string | null
+          singleton?: boolean
+          site_name?: string
+          tagline?: string | null
+          theme?: Json
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {

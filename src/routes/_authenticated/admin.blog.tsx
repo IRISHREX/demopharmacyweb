@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { z } from "zod";
+import { MediaUpload, detectMediaKind } from "@/components/site/media-upload";
 
 export const Route = createFileRoute("/_authenticated/admin/blog")({
   component: AdminBlog,
@@ -21,7 +22,7 @@ const schema = z.object({
   slug: z.string().trim().min(1).max(200).regex(/^[a-z0-9-]+$/),
   excerpt: z.string().trim().max(400).optional().or(z.literal("")),
   content: z.string().trim().max(20000).optional().or(z.literal("")),
-  image_url: z.string().trim().url().max(500).optional().or(z.literal("")),
+  image_url: z.string().trim().max(500).optional().or(z.literal("")),
   published: z.boolean(),
 });
 type Form = z.infer<typeof schema>;
@@ -63,6 +64,7 @@ function AdminBlog() {
         excerpt: v.excerpt || null,
         content: v.content || null,
         image_url: v.image_url || null,
+        media_type: detectMediaKind(v.image_url || null),
         published_at: v.published ? new Date().toISOString() : null,
       };
       if (editing) {
@@ -168,8 +170,14 @@ function AdminBlog() {
               <Textarea id="excerpt" rows={2} value={form.excerpt ?? ""} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} /></div>
             <div className="space-y-1.5"><Label htmlFor="content">Content</Label>
               <Textarea id="content" rows={8} value={form.content ?? ""} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
-            <div className="space-y-1.5"><Label htmlFor="image">Cover image URL</Label>
-              <Input id="image" type="url" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} /></div>
+            <div className="space-y-1.5"><Label>Cover media (image / video / gif / 3D)</Label>
+              <MediaUpload
+                value={form.image_url || null}
+                onChange={(url) => setForm({ ...form, image_url: url ?? "" })}
+                folder="blog"
+              />
+              <Input type="url" placeholder="…or paste a URL" value={form.image_url ?? ""} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+            </div>
             <div className="flex items-center gap-2">
               <Switch id="pub" checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} />
               <Label htmlFor="pub">Published</Label>

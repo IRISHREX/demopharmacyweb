@@ -155,12 +155,8 @@
   input[type="reset"]:hover,
   .btn:hover,
   .link-btn:hover {
-    color: transparent !important;
-    background-image: linear-gradient(135deg, #0ea48e 0%, #42ff9e 40%, #35a7ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    box-shadow: 0 12px 30px -22px rgba(66, 255, 158, 0.28);
+    color: var(--primary-foreground);
+    box-shadow: 0 10px 24px -18px color-mix(in oklab, var(--primary) 34%, transparent);
     transform: translateY(-1px);
   }
 }

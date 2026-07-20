@@ -4,6 +4,7 @@ import { Menu, X, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import logoImg from "@/assets/Zaxia_Logo.png";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -16,7 +17,10 @@ const nav = [
 export function SiteHeader({ variant = "default" }: { variant?: "default" | "hero" }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, adminChecked } = useAuth();
+  const { data: settings } = useSiteSettings();
+  const logoSrc = settings?.logo_url || logoImg;
+  const siteName = settings?.site_name || "Zaxia Healthcare";
 
   return (
     <header
@@ -30,10 +34,11 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
       <div className={cn("container-page flex h-16 items-center justify-between bg-white rounded-full", variant === "hero" ? "px-3" : "")}>
         <Link to="/" className="flex items-center gap-3">
           <img
-            src={logoImg}
-            alt="Zaxia Healthcare logo"
+            src={logoSrc}
+            alt={`${siteName} logo`}
             className="h-20 w-20 rounded-2xl object-contain "
           />
+          <span className="sr-only">{siteName}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1 ">
