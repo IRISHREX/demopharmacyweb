@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Package, Inbox, Newspaper } from "lucide-react";
+import { Package, Inbox, Newspaper, Eye, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: AdminDashboard,
