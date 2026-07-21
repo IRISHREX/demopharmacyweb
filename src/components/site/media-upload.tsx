@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 const ACCEPT = "image/*,video/mp4,video/webm,video/quicktime,image/gif,.glb,.gltf,model/gltf-binary,model/gltf+json";
 const MAX_MB = 25;
+const SIGN_EXPIRES = 60 * 60 * 24 * 365 * 10; // 10 years
 
 export type MediaKind = "image" | "video" | "gif" | "3d" | "other";
 
@@ -19,18 +20,47 @@ export function detectMediaKind(url: string | null | undefined): MediaKind {
   return "other";
 }
 
+/** Extract the storage path inside `media` bucket from a legacy public URL, if any. */
+function extractLegacyMediaPath(url: string): string | null {
+  const m = url.match(/\/storage\/v1\/object\/public\/media\/(.+)$/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
+const signedCache = new Map<string, string>();
+
+async function resolveMediaUrl(url: string): Promise<string> {
+  if (!url) return url;
+  // Already a signed URL or an external URL — use as-is.
+  if (url.includes("/object/sign/") || !url.includes("/storage/v1/object/public/media/")) return url;
+  if (signedCache.has(url)) return signedCache.get(url)!;
+  const path = extractLegacyMediaPath(url);
+  if (!path) return url;
+  const { data } = await supabase.storage.from("media").createSignedUrl(path, SIGN_EXPIRES);
+  const signed = data?.signedUrl ?? url;
+  signedCache.set(url, signed);
+  return signed;
+}
+
 export function MediaPreview({ url, className = "" }: { url: string | null; className?: string }) {
-  if (!url) return null;
-  const kind = detectMediaKind(url);
+  const [resolved, setResolved] = useState<string | null>(url);
+  useEffect(() => {
+    let cancelled = false;
+    if (!url) return setResolved(null);
+    resolveMediaUrl(url).then((r) => !cancelled && setResolved(r));
+    return () => { cancelled = true; };
+  }, [url]);
+
+  if (!resolved) return null;
+  const kind = detectMediaKind(resolved);
   if (kind === "video")
-    return <video src={url} className={className} autoPlay muted loop playsInline />;
+    return <video src={resolved} className={className} autoPlay muted loop playsInline />;
   if (kind === "3d")
     return (
       <div className={`flex items-center justify-center bg-muted text-xs text-muted-foreground ${className}`}>
-        3D model · {url.split("/").pop()}
+        3D model · {resolved.split("/").pop()?.split("?")[0]}
       </div>
     );
-  return <img src={url} alt="" className={className} />;
+  return <img src={resolved} alt="" className={className} />;
 }
 
 export function MediaUpload({
@@ -60,8 +90,11 @@ export function MediaUpload({
         contentType: file.type || undefined,
       });
       if (error) throw error;
-      const { data } = supabase.storage.from("media").getPublicUrl(path);
-      onChange(data.publicUrl, detectMediaKind(data.publicUrl));
+      const { data: signed, error: signErr } = await supabase.storage
+        .from("media")
+        .createSignedUrl(path, SIGN_EXPIRES);
+      if (signErr || !signed?.signedUrl) throw signErr ?? new Error("Sign failed");
+      onChange(signed.signedUrl, detectMediaKind(path));
       toast.success("Uploaded");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
