@@ -170,7 +170,7 @@ function Contact() {
                 src={MAPS_EMBED_SRC}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="h-[420px] w-full border-0"
+                className="h-105 w-full border-0"
                 allowFullScreen
               />
             ) : wantsMap ? (

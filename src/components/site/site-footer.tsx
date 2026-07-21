@@ -29,7 +29,7 @@ export function SiteFooter() {
             <img
               src={logoImg}
               alt="Zaxia Healthcare logo"
-              className="h-22 rounded-2xl  object-contain shadow-soft"
+              className="h-16 rounded-2xl  object-contain shadow-soft"
             />
           </div>
           <p className="mt-4 max-w-md text-sm text-primary-foreground/80 leading-relaxed">
@@ -43,7 +43,6 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5 text-sm text-primary-foreground/80">
             <li><Link to="/" className="hover:text-primary-foreground">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary-foreground">About Us</Link></li>
-            <li><Link to="/careers" className="hover:text-primary-foreground">Careers</Link></li>
             <li><Link to="/products" className="hover:text-primary-foreground">Products</Link></li>
             <li><Link to="/careers" className="hover:text-primary-foreground">Careers</Link></li>
             <li><Link to="/contact" className="hover:text-primary-foreground">Contact</Link></li>

@@ -161,7 +161,7 @@ function AdminProducts() {
         </Button>
       </div>
 
-      <div className="rounded-2xl border border-border/70 bg-card overflow-hidden">
+      <div className="rounded-2xl border border-border/70 bg-card overflow-x-auto">
         {products.isLoading ? (
           <div className="p-6 text-sm text-muted-foreground">Loading…</div>
         ) : (
@@ -172,7 +172,7 @@ function AdminProducts() {
                 <th className="px-4 py-3">Price</th>
                 <th className="px-4 py-3">Stock</th>
                 <th className="px-4 py-3">Featured</th>
-                <th className="px-4 py-3"></th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -185,7 +185,7 @@ function AdminProducts() {
                   <td className="px-4 py-3">{p.price_inr != null ? `₹${p.price_inr}` : "—"}</td>
                   <td className="px-4 py-3">{p.in_stock ? "In stock" : "Out"}</td>
                   <td className="px-4 py-3">{p.featured && <Star className="h-4 w-4 text-primary" />}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-center text-nowrap">
                     <Button variant="ghost" size="sm" onClick={() => openEdit(p)}>
                       <Pencil className="h-4 w-4" />
                     </Button>

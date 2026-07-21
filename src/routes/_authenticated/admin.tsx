@@ -52,7 +52,7 @@ function AdminLayout() {
   if (!isAdmin) return null;
 
   return (
-    <div className="container-page py-8 grid gap-6 lg:grid-cols-[240px_1fr]">
+    <div className="container-page py-8 mt-16 grid gap-6 lg:grid-cols-[240px_1fr]">
       <aside className="rounded-2xl border border-border/70 bg-card/80 p-4 h-fit lg:sticky lg:top-24">
         <div className="mb-4 px-2">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">Signed in</p>

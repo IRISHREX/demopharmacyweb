@@ -133,14 +133,14 @@ function AdminBlog() {
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-muted/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
-              <tr><th className="px-4 py-3">Title</th><th className="px-4 py-3">Status</th><th className="px-4 py-3"></th></tr>
+              <tr><th className="px-4 py-3">Title</th><th className="px-4 py-3">Status</th><th className="px-4 py-3 text-right">Actions</th></tr>
             </thead>
             <tbody className="divide-y divide-border/60">
               {posts.data?.map((p) => (
                 <tr key={p.id}>
                   <td className="px-4 py-3"><p className="font-medium">{p.title}</p><p className="text-xs text-muted-foreground">/{p.slug}</p></td>
                   <td className="px-4 py-3">{p.published_at ? <span className="text-primary">Published</span> : <span className="text-muted-foreground">Draft</span>}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-right text-nowrap">
                     <Button variant="ghost" size="sm" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
                     <Button variant="ghost" size="sm" onClick={() => { if (confirm(`Delete "${p.title}"?`)) remove.mutate(p.id); }}>
                       <Trash2 className="h-4 w-4 text-destructive" />
