@@ -32,6 +32,26 @@ function AdminDashboard() {
       return count ?? 0;
     },
   });
+  const visits = useQuery({
+    queryKey: ["admin", "count", "visits"],
+    queryFn: async () => {
+      const { count, error } = await supabase.from("page_visits").select("*", { count: "exact", head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+  const visits7d = useQuery({
+    queryKey: ["admin", "count", "visits", "7d"],
+    queryFn: async () => {
+      const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const { count, error } = await supabase
+        .from("page_visits")
+        .select("*", { count: "exact", head: true })
+        .gte("created_at", since);
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
   const recent = useQuery({
     queryKey: ["admin", "inquiries", "recent"],
     queryFn: async () => {
@@ -46,6 +66,8 @@ function AdminDashboard() {
   });
 
   const cards = [
+    { label: "Total visits", value: visits.data, icon: Eye },
+    { label: "Visits · 7 days", value: visits7d.data, icon: Users },
     { label: "Products", value: products.data, icon: Package },
     { label: "Blog posts", value: posts.data, icon: Newspaper },
     { label: "Inquiries", value: inquiries.data, icon: Inbox },
@@ -58,7 +80,7 @@ function AdminDashboard() {
         <p className="mt-1 text-muted-foreground">Overview of your Zaxia Healthcare site.</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {cards.map((c) => (
           <div key={c.label} className="rounded-2xl border border-border/70 bg-card p-5 shadow-soft">
             <div className="flex items-center justify-between">
