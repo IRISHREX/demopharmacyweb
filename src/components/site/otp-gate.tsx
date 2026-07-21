@@ -131,7 +131,6 @@ export function OtpGate({
           <label className="block">
             <span className="mb-1.5 block text-sm font-medium">Mobile number</span>
             <div className="relative">
-              <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}

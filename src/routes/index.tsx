@@ -91,7 +91,7 @@ function Home() {
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
                   to="/products"
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-secondary-foreground shadow-[0_18px_40px_-24px_rgba(56,189,248,0.9)] hover:bg-sky-400"
+                  className="inline-flex items-center gap-2 rounded-full bg-surface px-6 py-4 text-sm font-semibold text-secondary-foreground shadow-[0_18px_40px_-24px_rgba(56,189,248,0.9)] hover:bg-primary"
                 >
                   Explore products <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -244,8 +244,8 @@ function Home() {
 
       {/* CTA */}
       <section className="py-24">
-        <div className="container-page p-0 rounded-2xl shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)]">
-          <div className="relative overflow-hidden rounded-3xl bg-primary-foreground px-8 py-16 md:px-16 md:py-20 text-primary shhadow-">
+        <div className="container-page p-0 rounded-2xl border-white/20 bg-white/10 p-6 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <div className="relative overflow-hidden py-8 md:px-16 md:py-20 text-primary">
             <div className="relative max-w-2xl">
               <h2 className="text-3xl sm:text-4xl font-semibold text-primary-foreground gradient-heading">
                 Partner with a healthcare team you can trust.

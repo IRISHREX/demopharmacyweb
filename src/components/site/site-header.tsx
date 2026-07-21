@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Menu, X, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
-import logoImg from "@/assets/Zaxia_Logo.png";
+import logoImg from "@/assets/ZAXIA-LOGO.webp";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const nav = [
@@ -28,16 +28,16 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
       className={cn(
         "z-40 rounded-full border",
         variant === "hero"
-          ? "absolute inset-x-0 top-3 mx-auto w-full w-[97%] max-w-[76rem] bg-white shadow-soft"
-          : "sticky top-3 max-w-[76rem] mx-auto bg-white shadow-lg",
+          ? "absolute inset-x-0 top-3 mx-auto w-full w-[97%] max-w-[76rem] bg-surface shadow-soft"
+          : "sticky top-3 max-w-[76rem] mx-auto bg-surface shadow-lg",
       )}
     >
-      <div className={cn("container-page flex h-16 items-center justify-between bg-white rounded-full", variant === "hero" ? "px-3" : "")}>
-        <Link to="/" className="flex items-center gap-3">
+      <div className={cn("container-page flex h-17 items-center justify-between bg-surface rounded-full", variant === "hero" ? "px-4 py-1" : "")}>
+        <Link to="/" className="flex items-center gap-3 h-full p-1 rounded-xl">
           <img
             src={logoSrc}
             alt={`${siteName} logo`}
-            className="h-20 w-20 rounded-2xl object-contain "
+            className="h-full object-contain "
           />
           <span className="sr-only">{siteName}</span>
         </Link>
@@ -73,7 +73,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
           )}
           <Link
             to="/contact"
-            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border-0 border-2 border-white hover:opacity-95 hover:border-border"
+            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border border-surface hover:opacity-95 hover:border-primary hover:gradient-hero hover:text-primary-glow"
           >
             Enquire now
           </Link>

@@ -124,7 +124,7 @@ function AdminCareers() {
         <Button onClick={openNew}><Plus className="h-4 w-4 mr-1" /> New vacancy</Button>
       </div>
 
-      <div className="rounded-2xl border border-border/70 bg-card overflow-hidden">
+      <div className="rounded-2xl border border-border/70 bg-card overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
@@ -146,7 +146,7 @@ function AdminCareers() {
                     {r.is_open ? "Open" : "Closed"}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-3 text-right text-nowrap">
                   <button onClick={() => openEdit(r)} className="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-muted"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => confirm("Delete this vacancy?") && remove.mutate(r.id)} className="inline-flex h-8 w-8 items-center justify-center rounded text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
                 </td>
