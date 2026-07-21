@@ -73,7 +73,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
           )}
           <Link
             to="/contact"
-            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border-2 border-surface hover:opacity-95 hover:border-border hover:gradient-hero"
+            className="btn inline-flex items-center rounded-full gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft border border-surface hover:opacity-95 hover:border-primary hover:gradient-hero hover:text-primary-glow"
           >
             Enquire now
           </Link>
