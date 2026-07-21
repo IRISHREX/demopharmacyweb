@@ -32,7 +32,7 @@ export function SiteHeader({ variant = "default" }: { variant?: "default" | "her
           : "sticky top-3 max-w-[76rem] mx-auto bg-surface shadow-lg",
       )}
     >
-      <div className={cn("container-page flex h-18 items-center justify-between bg-surface rounded-full", variant === "hero" ? "px-3 py-1" : "")}>
+      <div className={cn("container-page flex h-17 items-center justify-between bg-surface rounded-full", variant === "hero" ? "px-4 py-1" : "")}>
         <Link to="/" className="flex items-center gap-3 h-full p-1 rounded-xl">
           <img
             src={logoSrc}
