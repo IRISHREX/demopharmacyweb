@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_posts: {
         Row: {
           content: string | null
@@ -21,11 +50,13 @@ export type Database = {
           excerpt: string | null
           id: string
           image_url: string | null
+          likes_count: number
           media_type: string
           published_at: string | null
           slug: string
           title: string
           updated_at: string
+          views_count: number
         }
         Insert: {
           content?: string | null
@@ -33,11 +64,13 @@ export type Database = {
           excerpt?: string | null
           id?: string
           image_url?: string | null
+          likes_count?: number
           media_type?: string
           published_at?: string | null
           slug: string
           title: string
           updated_at?: string
+          views_count?: number
         }
         Update: {
           content?: string | null
@@ -45,11 +78,13 @@ export type Database = {
           excerpt?: string | null
           id?: string
           image_url?: string | null
+          likes_count?: number
           media_type?: string
           published_at?: string | null
           slug?: string
           title?: string
           updated_at?: string
+          views_count?: number
         }
         Relationships: []
       }
@@ -146,6 +181,30 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      page_visits: {
+        Row: {
+          created_at: string
+          id: string
+          path: string
+          referrer: string | null
+          visitor_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          path: string
+          referrer?: string | null
+          visitor_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          path?: string
+          referrer?: string | null
+          visitor_id?: string | null
         }
         Relationships: []
       }
@@ -292,6 +351,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_blog_view: { Args: { _post_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "editor"
