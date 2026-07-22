@@ -7,8 +7,12 @@ export const Route = createFileRoute("/careers")({
   component: Careers,
   head: () => ({
     meta: [
-      { title: "Careers at Zaxia Healthcare — Join our team" },
-      { name: "description", content: "Explore open roles at Zaxia Healthcare Pvt. Ltd. Sales, QC, R&D and operations positions across India." },
+      { title: "Careers at Zaxia Healthcare - Join our team" },
+      {
+        name: "description",
+        content:
+          "Explore open roles at Zaxia Healthcare Pvt. Ltd. Sales, QC, R&D and operations positions across India.",
+      },
       { property: "og:title", content: "Careers at Zaxia Healthcare" },
       { property: "og:description", content: "Grow with a purpose-driven pharmaceutical company." },
     ],
@@ -30,24 +34,49 @@ interface Vacancy {
 async function fetchVacancies(): Promise<Vacancy[]> {
   const { data, error } = await supabase
     .from("job_vacancies")
-    .select("id, slug, title, department, location, employment_type, description, requirements, posted_at")
+    .select(
+      "id, slug, title, department, location, employment_type, description, requirements, posted_at",
+    )
     .eq("is_open", true)
     .order("posted_at", { ascending: false });
   if (error) throw error;
   return data ?? [];
 }
 
+function EmptyVacancies() {
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-10 text-center">
+      <Briefcase className="mx-auto h-8 w-8 text-primary" />
+      <p className="mt-3 font-medium">No open positions right now</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Check back soon or email{" "}
+        <a className="text-primary hover:underline" href="mailto:zaxiahealthcare@gmail.com">
+          zaxiahealthcare@gmail.com
+        </a>
+        .
+      </p>
+    </div>
+  );
+}
+
 function Careers() {
   const q = useQuery({ queryKey: ["careers"], queryFn: fetchVacancies });
+  const vacancies = q.data ?? [];
+  const shouldShowEmpty = (q.isSuccess && vacancies.length === 0) || q.isError;
 
   return (
     <>
       <section className="gradient-brand text-primary-foreground rounded-b-2xl md:rounded-2xl md:m-1">
         <div className="container-page py-16 md:py-20 max-w-3xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground mt-16">Careers</p>
-          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">Build a healthier tomorrow with us.</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground mt-16">
+            Careers
+          </p>
+          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold gradient-heading">
+            Build a healthier tomorrow with us.
+          </h1>
           <p className="mt-4 text-lg text-primary-foreground">
-            Join Zaxia Healthcare — a growing pharma company where quality, science and people come first.
+            Join Zaxia Healthcare - a growing pharma company where quality, science and people come
+            first.
           </p>
         </div>
       </section>
@@ -58,33 +87,46 @@ function Careers() {
             <div>
               <h2 className="text-3xl font-semibold gradient-heading">Open positions</h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                {q.data ? `${q.data.length} role${q.data.length === 1 ? "" : "s"} currently open` : "Loading…"}
+                {q.isLoading
+                  ? "Loading..."
+                  : q.isError
+                    ? "No roles currently open"
+                    : `${vacancies.length} role${vacancies.length === 1 ? "" : "s"} currently open`}
               </p>
             </div>
           </div>
 
-          {q.isLoading && <p className="text-sm text-muted-foreground">Loading roles…</p>}
-          {q.isError && <p className="text-sm text-destructive">Could not load vacancies.</p>}
-          {q.data && q.data.length === 0 && (
-            <div className="rounded-2xl border border-border/60 bg-card p-10 text-center">
-              <Briefcase className="mx-auto h-8 w-8 text-primary" />
-              <p className="mt-3 font-medium">No open positions right now</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Check back soon or email <a className="text-primary hover:underline" href="mailto:zaxiahealthcare@gmail.com">zaxiahealthcare@gmail.com</a>.
-              </p>
-            </div>
-          )}
+          {q.isLoading && <p className="text-sm text-muted-foreground">Loading roles...</p>}
+          {shouldShowEmpty && <EmptyVacancies />}
 
           <div className="grid gap-4">
-            {q.data?.map((v) => (
-              <article key={v.id} className="rounded-2xl border border-border/60 bg-card p-6 md:p-7 shadow-soft transition hover:border-primary/40">
+            {vacancies.map((v) => (
+              <article
+                key={v.id}
+                className="rounded-2xl border border-border/60 bg-card p-6 md:p-7 shadow-soft transition hover:border-primary/40"
+              >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-xl font-semibold">{v.title}</h3>
                     <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                      {v.department && <span className="inline-flex items-center gap-1.5"><Building2 className="h-4 w-4" />{v.department}</span>}
-                      {v.location && <span className="inline-flex items-center gap-1.5"><MapPin className="h-4 w-4" />{v.location}</span>}
-                      {v.employment_type && <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{v.employment_type}</span>}
+                      {v.department && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Building2 className="h-4 w-4" />
+                          {v.department}
+                        </span>
+                      )}
+                      {v.location && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <MapPin className="h-4 w-4" />
+                          {v.location}
+                        </span>
+                      )}
+                      {v.employment_type && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock className="h-4 w-4" />
+                          {v.employment_type}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <Link
@@ -95,7 +137,9 @@ function Careers() {
                     Apply
                   </Link>
                 </div>
-                {v.description && <p className="mt-4 text-sm leading-relaxed text-foreground/80">{v.description}</p>}
+                {v.description && (
+                  <p className="mt-4 text-sm leading-relaxed text-foreground/80">{v.description}</p>
+                )}
                 {v.requirements && (
                   <div className="mt-3 text-sm">
                     <span className="font-medium">Requirements: </span>
