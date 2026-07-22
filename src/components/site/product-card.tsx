@@ -102,19 +102,10 @@ export function ProductCard({ product, category }: Props) {
   const [askOpen, setAskOpen] = useState(false);
 
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-border/70 bg-card overflow-hidden transition-all duration-500 card-3d shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] hover:border-primary/30 hover:shadow-elegant">
-      <button
-        type="button"
-        onClick={() => setAskOpen(true)}
-        aria-label={`Ask a question about ${product.name}`}
-        title="Ask about this product"
-        className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-background/90 text-primary shadow-soft ring-1 ring-border/60 backdrop-blur hover:bg-primary hover:text-primary-foreground"
-      >
-        <Info className="h-4 w-4" />
-      </button>
+    <article className="group relative flex flex-col rounded-2xl border-1 border-border/70 bg-card overflow-hidden transition-all duration-500 card-3d shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] hover:border-primary/30 hover:shadow-elegant">
       {productImage ? (
-        <div className="relative h-56 w-full overflow-hidden bg-white flex items-center justify-center">
-          <MediaPreview url={productImage} className="w-full h-full object-contain p-4" />
+        <div className="relative h-56 w-full overflow-hidden bg-card flex items-center justify-center p-2">
+          <MediaPreview url={productImage} className="w-full h-full object-cover rounded-xl" />
         </div>
       ) : (
         <div className="mb-5 flex h-56 w-full items-center justify-center bg-primary/5 rounded-t-[2rem]">
@@ -123,7 +114,7 @@ export function ProductCard({ product, category }: Props) {
           </div>
         </div>
       )}
-      <div className="flex flex-col p-6 bg-linear-to-b from-primary/15 via-background/5 to-transparent rounded-t-2xl">
+      <div className="flex flex-col p-6 bg-linear-to-b from-primary/15 via-background/5 to-transparent">
         {category && (
           <p className="text-xs font-semibold uppercase tracking-wider text-primary/80">
             {category.name}
