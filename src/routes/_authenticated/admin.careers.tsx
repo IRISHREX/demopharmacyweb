@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, ListChecks } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +59,7 @@ function AdminCareers() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<Form>(empty);
+  const [fieldsFor, setFieldsFor] = useState<Row | null>(null);
 
   const upsert = useMutation({
     mutationFn: async (payload: Form & { id?: string }) => {
@@ -147,6 +148,7 @@ function AdminCareers() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right text-nowrap">
+                  <button onClick={() => setFieldsFor(r)} className="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-muted" title="Manage form fields"><ListChecks className="h-4 w-4" /></button>
                   <button onClick={() => openEdit(r)} className="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-muted"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => confirm("Delete this vacancy?") && remove.mutate(r.id)} className="inline-flex h-8 w-8 items-center justify-center rounded text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
                 </td>
