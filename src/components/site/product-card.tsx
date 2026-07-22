@@ -1,5 +1,13 @@
+import { useState } from "react";
 import type { Product, Category } from "@/lib/catalog";
-import { Pill } from "lucide-react";
+import { Pill, Info } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { MediaPreview } from "@/components/site/media-upload";
 
 // Import all product images with new names
