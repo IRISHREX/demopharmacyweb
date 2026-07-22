@@ -38,8 +38,23 @@ export function ThemeApplier() {
   useEffect(() => {
     if (typeof document === "undefined") return;
     const root = document.documentElement;
-    const mode = data?.theme?.mode ?? "light";
-    root.classList.toggle("dark", mode === "dark");
+    const mode = data?.theme?.mode ?? "default";
+    root.classList.toggle("dark", mode === "dark" || mode === "pro");
+    root.classList.toggle("theme-pro", mode === "pro");
+
+    // Reset overrides then re-apply
+    root.style.removeProperty("--primary");
+    root.style.removeProperty("--primary-foreground");
+    root.style.removeProperty("--ring");
+
+    if (mode === "pro") {
+      // Gold accents on deep black + Times New Roman
+      root.style.setProperty("--primary", "hsl(43 74% 55%)");
+      root.style.setProperty("--primary-foreground", "oklch(0.12 0.02 60)");
+      root.style.setProperty("--ring", "hsl(43 74% 55%)");
+      return;
+    }
+
     const primary = data?.theme?.primary;
     if (primary) {
       const hsl = hexToHsl(primary);
