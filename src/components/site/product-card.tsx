@@ -93,10 +93,10 @@ export function ProductCard({ product, category }: Props) {
   const productImage = product.image_url || getProductImage(product.name);
 
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-border/70 bg-card overflow-hidden transition-all duration-500 card-3d shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] hover:border-primary/30 hover:shadow-elegant">
+    <article className="group relative flex flex-col rounded-2xl border-1 border-border/70 bg-card overflow-hidden transition-all duration-500 card-3d shadow-[0_30px_70px_-30px_rgba(0,0,0,0.35)] hover:border-primary/30 hover:shadow-elegant">
       {productImage ? (
-        <div className="relative h-56 w-full overflow-hidden bg-white flex items-center justify-center">
-          <MediaPreview url={productImage} className="w-full h-full object-contain p-4" />
+        <div className="relative h-56 w-full overflow-hidden bg-card flex items-center justify-center p-2">
+          <MediaPreview url={productImage} className="w-full h-full object-cover rounded-xl" />
         </div>
       ) : (
         <div className="mb-5 flex h-56 w-full items-center justify-center bg-primary/5 rounded-t-[2rem]">
@@ -105,7 +105,7 @@ export function ProductCard({ product, category }: Props) {
           </div>
         </div>
       )}
-      <div className="flex flex-col p-6 bg-linear-to-b from-primary/15 via-background/5 to-transparent rounded-t-2xl">
+      <div className="flex flex-col p-6 bg-linear-to-b from-primary/15 via-background/5 to-transparent">
         {category && (
           <p className="text-xs font-semibold uppercase tracking-wider text-primary/80">
             {category.name}
