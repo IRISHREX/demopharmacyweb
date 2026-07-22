@@ -23,9 +23,41 @@ const OFFICE_ADDRESS = "127/24, Dhankal, Hatiara, Kolkata – 700157, West Benga
 const MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(OFFICE_ADDRESS)}&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(OFFICE_ADDRESS)}`;
 
+// Enhanced input sanitization and validation
+function sanitizeInput(input: string): string {
+  return input
+    .trim()
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .slice(0, 4000); // Hard limit
+}
+
+function sanitizeEmail(email: string): string {
+  return email
+    .trim()
+    .toLowerCase()
+    .slice(0, 200);
+}
+
 const messageSchema = z.object({
-  email: z.string().trim().email("Enter a valid email").max(200),
-  message: z.string().trim().min(5, "Message is too short").max(4000),
+  email: z.string()
+    .trim()
+    .email("Enter a valid email")
+    .max(200, "Email is too long")
+    .refine(email => {
+      // Additional email validation to prevent email injection
+      const sanitized = sanitizeEmail(email);
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitized);
+    }, "Invalid email format"),
+  message: z.string()
+    .trim()
+    .min(5, "Message is too short")
+    .max(4000, "Message is too long")
+    .refine(message => {
+      // Prevent potential script injection in message
+      const sanitized = sanitizeInput(message);
+      return !/<script|javascript:|on\w+\s*=/i.test(sanitized);
+    }, "Message contains invalid characters"),
 });
 
 function Contact() {
@@ -44,11 +76,17 @@ function Contact() {
     const parsed = messageSchema.safeParse(form);
     if (!parsed.success) return toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
     setSubmitting(true);
+    
+    // Use sanitized data for database insertion
+    const sanitizedEmail = sanitizeEmail(parsed.data.email);
+    const sanitizedMessage = sanitizeInput(parsed.data.message);
+    const sanitizedName = sanitizeInput(verified.name || "Guest");
+    
     const { error } = await supabase.from("inquiries").insert({
-      name: verified.name || "Guest",
-      email: parsed.data.email,
+      name: sanitizedName,
+      email: sanitizedEmail,
       phone: verified.phone,
-      message: parsed.data.message,
+      message: sanitizedMessage,
     });
     setSubmitting(false);
     if (error) return toast.error("Could not send message. Please try again.");

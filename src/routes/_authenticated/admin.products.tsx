@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Plus, Pencil, Trash2, Star } from "lucide-react";
@@ -14,6 +14,24 @@ import { z } from "zod";
 import { MediaUpload, detectMediaKind } from "@/components/site/media-upload";
 
 export const Route = createFileRoute("/_authenticated/admin/products")({
+  beforeLoad: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) {
+      throw redirect({ to: "/auth" });
+    }
+    
+    // Server-side admin role check
+    const { data: roleData, error: roleError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', data.user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (roleError || !roleData) {
+      throw redirect({ to: "/", replace: true });
+    }
+  },
   component: AdminProducts,
 });
 

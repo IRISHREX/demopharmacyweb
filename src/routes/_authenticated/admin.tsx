@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { LayoutDashboard, Package, Inbox, Newspaper, LogOut, ExternalLink, Briefcase, Settings, BarChart3, ClipboardList, MessageCircleQuestion } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +13,26 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  beforeLoad: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) {
+      throw redirect({ to: "/auth" });
+    }
+    
+    // Server-side admin role check
+    const { data: roleData, error: roleError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', data.user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (roleError || !roleData) {
+      throw redirect({ to: "/", replace: true });
+    }
+    
+    return { user: data.user, isAdmin: true };
+  },
   component: AdminLayout,
 });
 
@@ -33,6 +53,7 @@ function AdminLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  // Client-side verification as secondary check (server-side is primary)
   useEffect(() => {
     if (adminChecked && user && !isAdmin) {
       toast.error("You don't have admin access.");

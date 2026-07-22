@@ -6,6 +6,25 @@ import { cn } from "@/lib/utils";
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
+// Sanitize CSS color values to prevent XSS
+function sanitizeColorValue(color: string | undefined): string | null {
+  if (!color) return null;
+  
+  // Only allow valid CSS color formats
+  // Hex colors: #fff, #ffffff
+  // RGB/RGBA: rgb(255,255,255), rgba(255,255,255,0.5)
+  // HSL/HSLA: hsl(0,100%,50%), hsla(0,100%,50%,0.5)
+  // Named colors: red, blue, etc.
+  const validColorRegex = /^(#[0-9a-fA-F]{3,8}|rgb\(\d{1,3},\s*\d{1,3},\s*\d{1,3}\)|rgba\(\d{1,3},\s*\d{1,3},\s*\d{1,3},\s*[\d.]+\)|hsl\(\d{1,3},\s*\d{1,3}%,\s*\d{1,3}%\)|hsla\(\d{1,3},\s*\d{1,3}%,\s*\d{1,3}%,\s*[\d.]+\)|[a-zA-Z]+)$/;
+  
+  if (validColorRegex.test(color.trim())) {
+    return color.trim();
+  }
+  
+  // Return null if invalid color to prevent XSS
+  return null;
+}
+
 export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode;
@@ -68,23 +87,31 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null;
   }
 
+  // Generate safe CSS with sanitized color values
+  const safeCSS = Object.entries(THEMES)
+    .map(([theme, prefix]) => {
+      const cssRules = colorConfig
+        .map(([key, itemConfig]) => {
+          const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
+          const safeColor = sanitizeColorValue(color);
+          return safeColor ? `  --color-${key}: ${safeColor};` : null;
+        })
+        .filter(Boolean)
+        .join("\n");
+      
+      return cssRules ? `${prefix} [data-chart=${id}] {\n${cssRules}\n}` : null;
+    })
+    .filter(Boolean)
+    .join("\n");
+
+  if (!safeCSS) {
+    return null;
+  }
+
   return (
     <style
       dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
-    const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
-}
-`,
-          )
-          .join("\n"),
+        __html: safeCSS,
       }}
     />
   );
