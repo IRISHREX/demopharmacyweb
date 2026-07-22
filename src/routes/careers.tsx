@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Briefcase, MapPin, Clock, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -87,12 +87,13 @@ function Careers() {
                       {v.employment_type && <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4" />{v.employment_type}</span>}
                     </div>
                   </div>
-                  <a
-                    href={`mailto:zaxiahealthcare@gmail.com?subject=${encodeURIComponent("Application: " + v.title)}`}
+                  <Link
+                    to="/careers/$slug/apply"
+                    params={{ slug: v.slug }}
                     className="inline-flex items-center rounded-full gradient-brand px-5 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
                   >
                     Apply
-                  </a>
+                  </Link>
                 </div>
                 {v.description && <p className="mt-4 text-sm leading-relaxed text-foreground/80">{v.description}</p>}
                 {v.requirements && (

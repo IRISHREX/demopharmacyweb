@@ -24,7 +24,7 @@ type Form = {
   google_maps_url: string;
   latitude: string;
   longitude: string;
-  theme_mode: "light" | "dark";
+  theme_mode: "default" | "light" | "dark" | "pro";
   theme_primary: string;
   quote_text: string;
   quote_author: string;
@@ -40,7 +40,7 @@ const fromSettings = (s: SiteSettings | null | undefined): Form => ({
   google_maps_url: s?.google_maps_url ?? "",
   latitude: s?.latitude?.toString() ?? "",
   longitude: s?.longitude?.toString() ?? "",
-  theme_mode: (s?.theme?.mode as "light" | "dark") ?? "light",
+  theme_mode: (s?.theme?.mode as Form["theme_mode"]) ?? "default",
   theme_primary: s?.theme?.primary ?? "#0b6bcb",
   quote_text: s?.quote_text ?? "",
   quote_author: s?.quote_author ?? "",
@@ -164,10 +164,12 @@ function AdminSettings() {
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                 value={form.theme_mode}
-                onChange={(e) => setForm({ ...form, theme_mode: e.target.value as "light" | "dark" })}
+                onChange={(e) => setForm({ ...form, theme_mode: e.target.value as Form["theme_mode"] })}
               >
+                <option value="default">Default</option>
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
+                <option value="pro">Pro (Gold on Black · Times New Roman)</option>
               </select>
             </div>
             <div className="space-y-1.5">

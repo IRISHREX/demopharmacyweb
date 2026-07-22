@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, ListChecks } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +59,7 @@ function AdminCareers() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<Form>(empty);
+  const [fieldsFor, setFieldsFor] = useState<Row | null>(null);
 
   const upsert = useMutation({
     mutationFn: async (payload: Form & { id?: string }) => {
@@ -147,6 +148,7 @@ function AdminCareers() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right text-nowrap">
+                  <button onClick={() => setFieldsFor(r)} className="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-muted" title="Manage form fields"><ListChecks className="h-4 w-4" /></button>
                   <button onClick={() => openEdit(r)} className="inline-flex h-8 w-8 items-center justify-center rounded hover:bg-muted"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => confirm("Delete this vacancy?") && remove.mutate(r.id)} className="inline-flex h-8 w-8 items-center justify-center rounded text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
                 </td>
@@ -206,6 +208,141 @@ function AdminCareers() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <FieldsDialog vacancy={fieldsFor} onClose={() => setFieldsFor(null)} />
     </div>
   );
 }
+
+type FieldRow = {
+  id: string;
+  vacancy_id: string;
+  label: string;
+  field_type: "text" | "textarea" | "email" | "tel" | "select" | "file";
+  options: string[] | null;
+  required: boolean;
+  order_index: number;
+};
+
+function FieldsDialog({ vacancy, onClose }: { vacancy: Row | null; onClose: () => void }) {
+  const qc = useQueryClient();
+  const [label, setLabel] = useState("");
+  const [type, setType] = useState<FieldRow["field_type"]>("text");
+  const [required, setRequired] = useState(false);
+  const [options, setOptions] = useState("");
+
+  const list = useQuery({
+    queryKey: ["job-fields", vacancy?.id],
+    enabled: !!vacancy,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("job_application_fields")
+        .select("*")
+        .eq("vacancy_id", vacancy!.id)
+        .order("order_index");
+      if (error) throw error;
+      return (data ?? []) as FieldRow[];
+    },
+  });
+
+  const add = useMutation({
+    mutationFn: async () => {
+      if (!vacancy || !label.trim()) return;
+      const next = (list.data?.length ?? 0) + 1;
+      const { error } = await supabase.from("job_application_fields").insert({
+        vacancy_id: vacancy.id,
+        label: label.trim(),
+        field_type: type,
+        required,
+        options: type === "select" ? options.split(",").map((o) => o.trim()).filter(Boolean) : null,
+        order_index: next,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Field added");
+      setLabel(""); setOptions(""); setRequired(false); setType("text");
+      qc.invalidateQueries({ queryKey: ["job-fields", vacancy?.id] });
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Failed"),
+  });
+
+  const del = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("job_application_fields").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["job-fields", vacancy?.id] }),
+  });
+
+  return (
+    <Dialog open={!!vacancy} onOpenChange={(v) => !v && onClose()}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Form fields · {vacancy?.title}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-border/60 bg-muted/30 p-4 space-y-3">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <Label>Question / Label</Label>
+                <Input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Years of experience" />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Type</Label>
+                <select
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={type}
+                  onChange={(e) => setType(e.target.value as FieldRow["field_type"])}
+                >
+                  <option value="text">Short text</option>
+                  <option value="textarea">Long text</option>
+                  <option value="email">Email</option>
+                  <option value="tel">Phone</option>
+                  <option value="select">Dropdown</option>
+                  <option value="file">File upload</option>
+                </select>
+              </div>
+            </div>
+            {type === "select" && (
+              <div className="space-y-1.5">
+                <Label>Options (comma-separated)</Label>
+                <Input value={options} onChange={(e) => setOptions(e.target.value)} placeholder="0-1, 1-3, 3-5, 5+" />
+              </div>
+            )}
+            <label className="inline-flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={required} onChange={(e) => setRequired(e.target.checked)} />
+              Required field
+            </label>
+            <div>
+              <Button onClick={() => add.mutate()} disabled={add.isPending || !label.trim()} size="sm">
+                <Plus className="mr-1 h-4 w-4" /> Add field
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            {list.data?.map((f, i) => (
+              <div key={f.id} className="flex items-center justify-between rounded-lg border border-border/60 bg-card p-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-medium truncate">{i + 1}. {f.label} {f.required && <span className="text-destructive">*</span>}</div>
+                  <div className="text-xs text-muted-foreground">{f.field_type}{f.options?.length ? ` · ${f.options.join(", ")}` : ""}</div>
+                </div>
+                <button onClick={() => del.mutate(f.id)} className="inline-flex h-8 w-8 items-center justify-center rounded text-destructive hover:bg-destructive/10">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+            {list.data && list.data.length === 0 && (
+              <p className="text-sm text-muted-foreground">No custom fields yet. Applicants will only submit name, phone and email.</p>
+            )}
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Done</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+

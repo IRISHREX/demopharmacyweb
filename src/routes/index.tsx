@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck, Clock, Globe2, Award, Sparkles, Facebook, Twit
 import { fetchCategories, fetchFeaturedProducts } from "@/lib/catalog";
 import { SectionHeading } from "@/components/site/section-heading";
 import { ProductCard } from "@/components/site/product-card";
+import { useCanRenderHeavyMedia } from "@/lib/network";
 import heroImg from "@/assets/dna-closeup.jpeg";
 import dnaHeroVideo from "@/assets/dna-closeup.mp4";
 import aboutImg from "@/assets/about-lab.jpg";
@@ -26,7 +27,8 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const canPlayVideo = useCanRenderHeavyMedia();
+  const [isVideoPlaying, setIsVideoPlaying] = useState(canPlayVideo);
   const products = useQuery({ queryKey: ["featured-products"], queryFn: () => fetchFeaturedProducts(6) });
   const categories = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
   const catMap = new Map((categories.data ?? []).map((c) => [c.id, c]));
@@ -50,32 +52,43 @@ function Home() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden hero-landing rounded-b-4xl shadow-[0_10px_20px_5px_rgba(2,6,23,0.55)]">
-          <video
-            ref={videoRef}
-            src={dnaHeroVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster={heroImg}
-            className="absolute inset-0 h-full w-full object-cover"
-            onPlay={() => setIsVideoPlaying(true)}
-            onPause={() => setIsVideoPlaying(false)}
-          />
+          {canPlayVideo ? (
+            <video
+              ref={videoRef}
+              src={dnaHeroVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster={heroImg}
+              className="absolute inset-0 h-full w-full object-cover"
+              onPlay={() => setIsVideoPlaying(true)}
+              onPause={() => setIsVideoPlaying(false)}
+            />
+          ) : (
+            <img
+              src={heroImg}
+              alt="DNA closeup"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="eager"
+            />
+          )}
           <div
             className="absolute inset-0"
             style={{ background: "linear-gradient(45deg, color-mix(in oklab, var(--secondary-foreground) 85%, rgba(2, 6, 23, 0.95)) 0%, rgba(2, 6, 23, 0.6) 45%, rgba(2, 6, 23, 0) 60%)" }}
           />
-          <button
-            type="button"
-            onClick={toggleHeroVideo}
-            aria-label={isVideoPlaying ? "Pause background video" : "Play background video"}
-            title={isVideoPlaying ? "Pause video" : "Play video"}
-            className="absolute bottom-5 right-5 z-30 grid h-9 w-9 place-items-center rounded-full border border-sky-100/45 bg-blue-500/35 text-white shadow-lg backdrop-blur-md transition hover:scale-105 hover:bg-blue-500/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-100 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-          >
-            {isVideoPlaying ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4 translate-x-px" aria-hidden="true" />}
-          </button>
+          {canPlayVideo && (
+            <button
+              type="button"
+              onClick={toggleHeroVideo}
+              aria-label={isVideoPlaying ? "Pause background video" : "Play background video"}
+              title={isVideoPlaying ? "Pause video" : "Play video"}
+              className="absolute bottom-5 right-5 z-30 grid h-9 w-9 place-items-center rounded-full border border-sky-100/45 bg-blue-500/35 text-white shadow-lg backdrop-blur-md transition hover:scale-105 hover:bg-blue-500/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-100 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            >
+              {isVideoPlaying ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4 translate-x-px" aria-hidden="true" />}
+            </button>
+          )}
         <div className="container-page relative isolate overflow-hidden px-6 py-20 ">
           <div className="relative grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="relative z-10 text-white mt-20">
