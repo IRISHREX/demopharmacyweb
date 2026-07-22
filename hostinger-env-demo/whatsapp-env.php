@@ -1,0 +1,2 @@
+<?php
+putenv('CLOUD_WHATSAPP_API_KEY=6b881f3ae19647b5a1d9a2f19e175a86');
