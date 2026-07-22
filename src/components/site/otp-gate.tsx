@@ -4,8 +4,7 @@ import { toast } from "sonner";
 import { Phone, ShieldCheck } from "lucide-react";
 
 /**
- * OTP verification gate (placeholder API).
- * Wire real SMS/WhatsApp API in `sendOtp` and `verifyOtp` below.
+ * OTP verification gate.
  * Session-scoped: once verified, key is stored in sessionStorage.
  */
 
@@ -14,24 +13,55 @@ const OTP_STORAGE_KEY = "zaxia_otp_verified_phone";
 const phoneSchema = z
   .string()
   .trim()
-  .regex(/^(\+?\d{10,15})$/i, "Enter a valid mobile number (10-15 digits)");
+  .regex(/^\+91\s?\d{10}$/i, "Enter a valid 10-digit Indian mobile number");
 
 const nameSchema = z.string().trim().min(2, "Enter your name").max(120);
 
-// -------- Placeholder API calls (replace with real SMS/WhatsApp gateway) --------
-async function sendOtp(_phone: string, _channel: "sms" | "whatsapp"): Promise<void> {
-  // TODO: integrate real API (Twilio, MSG91, Gupshup, etc.)
-  // await fetch("/api/public/otp/send", { method: "POST", body: JSON.stringify({ phone, channel }) });
-  await new Promise((r) => setTimeout(r, 700));
+function normalizeMobile(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
 }
 
-async function verifyOtp(_phone: string, code: string): Promise<boolean> {
-  // TODO: replace with real verification endpoint.
-  // Placeholder: any 6-digit code is accepted; "000000" is rejected.
-  await new Promise((r) => setTimeout(r, 500));
-  return /^\d{6}$/.test(code) && code !== "000000";
+async function postOtpEndpoint<T>(
+  paths: string[],
+  body: Record<string, string>,
+): Promise<{ response: Response; data: T | null }> {
+  let lastResponse: Response | undefined;
+
+  for (const path of paths) {
+    const response = await fetch(path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    });
+    lastResponse = response;
+
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType.includes("text/html")) continue;
+
+    if (!response.ok) return { response, data: null };
+    const data = contentType.includes("application/json") ? ((await response.json()) as T) : null;
+    return { response, data };
+  }
+
+  throw new Error(`OTP endpoint returned ${lastResponse?.status ?? "no response"}`);
 }
-// -------------------------------------------------------------------------------
+
+async function sendOtp(phone: string): Promise<void> {
+  const mobile = normalizeMobile(phone);
+  const { response } = await postOtpEndpoint(["/api/otp/send", "/api/otp/send.php"], { mobile });
+  if (!response.ok) throw new Error(`OTP service returned ${response.status}`);
+}
+
+async function verifyOtp(code: string): Promise<boolean> {
+  const { response, data } = await postOtpEndpoint<{ verified?: boolean }>(
+    ["/api/otp/verify", "/api/otp/verify.php"],
+    { code },
+  );
+  if (!response.ok) return false;
+  return data?.verified === true;
+}
 
 export function isPhoneVerified(): { phone: string; name?: string } | null {
   if (typeof window === "undefined") return null;
@@ -57,8 +87,7 @@ export function OtpGate({
 }) {
   const [step, setStep] = useState<"details" | "code">("details");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [channel, setChannel] = useState<"sms" | "whatsapp">("whatsapp");
+  const [phone, setPhone] = useState("+91 ");
   const [code, setCode] = useState("");
   const [sending, setSending] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -73,8 +102,8 @@ export function OtpGate({
     if (!phoneOk.success) return toast.error(phoneOk.error.issues[0].message);
     setSending(true);
     try {
-      await sendOtp(phone, channel);
-      toast.success(`OTP sent via ${channel === "whatsapp" ? "WhatsApp" : "SMS"} (placeholder — use any 6-digit code)`);
+      await sendOtp(phone);
+      toast.success("OTP sent via WhatsApp");
       setStep("code");
     } catch {
       toast.error("Could not send OTP. Try again.");
@@ -87,7 +116,7 @@ export function OtpGate({
     e.preventDefault();
     setVerifying(true);
     try {
-      const ok = await verifyOtp(phone, code);
+      const ok = await verifyOtp(code);
       if (!ok) {
         toast.error("Invalid code. Try again.");
         return;
@@ -133,7 +162,10 @@ export function OtpGate({
             <div className="relative">
               <input
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  const digits = e.target.value.replace(/\D/g, "").replace(/^91/, "").slice(0, 10);
+                  setPhone(`+91 ${digits}`);
+                }}
                 required
                 inputMode="tel"
                 maxLength={20}
@@ -142,26 +174,6 @@ export function OtpGate({
               />
             </div>
           </label>
-          <fieldset className="flex gap-2">
-            {(["whatsapp", "sms"] as const).map((c) => (
-              <label
-                key={c}
-                className={`flex-1 cursor-pointer rounded-lg border px-3 py-2 text-center text-sm capitalize transition ${
-                  channel === c ? "border-primary bg-primary/10 text-primary" : "border-border/60 text-foreground/70"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="channel"
-                  value={c}
-                  checked={channel === c}
-                  onChange={() => setChannel(c)}
-                  className="sr-only"
-                />
-                {c === "whatsapp" ? "WhatsApp" : "SMS"}
-              </label>
-            ))}
-          </fieldset>
           <button
             type="submit"
             disabled={sending}
@@ -184,7 +196,7 @@ export function OtpGate({
               placeholder="••••••"
             />
             <span className="mt-1 block text-xs text-muted-foreground">
-              Sent to {phone} via {channel === "whatsapp" ? "WhatsApp" : "SMS"}.
+              Sent to {phone} via WhatsApp.
             </span>
           </label>
           <div className="flex gap-2">

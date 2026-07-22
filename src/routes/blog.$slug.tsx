@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Heart, Eye, ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { MediaPreview } from "@/components/site/media-upload";
 import { getVisitorId } from "@/lib/visitor";
@@ -63,12 +64,15 @@ function BlogDetail() {
 
   const toggleLike = useMutation({
     mutationFn: async () => {
-      if (!post.data) return;
+      if (!post.data) throw new Error("Post not loaded");
+      if (!visitor) throw new Error("Visitor id missing");
       if (liked.data) {
-        await supabase.from("blog_post_likes").delete()
+        const { error } = await supabase.from("blog_post_likes").delete()
           .eq("post_id", post.data.id).eq("visitor_id", visitor);
+        if (error) throw error;
       } else {
-        await supabase.from("blog_post_likes").insert({ post_id: post.data.id, visitor_id: visitor });
+        const { error } = await supabase.from("blog_post_likes").insert({ post_id: post.data.id, visitor_id: visitor });
+        if (error) throw error;
       }
     },
     onSuccess: () => {
@@ -76,6 +80,7 @@ function BlogDetail() {
       qc.invalidateQueries({ queryKey: ["blog", "detail", slug] });
       qc.invalidateQueries({ queryKey: ["blog", "list"] });
     },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not update like"),
   });
 
   if (post.isLoading) return <div className="container-page py-16 text-sm text-muted-foreground">Loading…</div>;

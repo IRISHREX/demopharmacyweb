@@ -139,6 +139,91 @@ export type Database = {
         }
         Relationships: []
       }
+      job_application_fields: {
+        Row: {
+          created_at: string
+          field_type: string
+          id: string
+          label: string
+          options: Json | null
+          order_index: number
+          required: boolean
+          vacancy_id: string
+        }
+        Insert: {
+          created_at?: string
+          field_type?: string
+          id?: string
+          label: string
+          options?: Json | null
+          order_index?: number
+          required?: boolean
+          vacancy_id: string
+        }
+        Update: {
+          created_at?: string
+          field_type?: string
+          id?: string
+          label?: string
+          options?: Json | null
+          order_index?: number
+          required?: boolean
+          vacancy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_application_fields_vacancy_id_fkey"
+            columns: ["vacancy_id"]
+            isOneToOne: false
+            referencedRelation: "job_vacancies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_applications: {
+        Row: {
+          answers: Json
+          applicant_email: string | null
+          applicant_name: string
+          applicant_phone: string
+          created_at: string
+          id: string
+          resume_url: string | null
+          status: string
+          vacancy_id: string
+        }
+        Insert: {
+          answers?: Json
+          applicant_email?: string | null
+          applicant_name: string
+          applicant_phone: string
+          created_at?: string
+          id?: string
+          resume_url?: string | null
+          status?: string
+          vacancy_id: string
+        }
+        Update: {
+          answers?: Json
+          applicant_email?: string | null
+          applicant_name?: string
+          applicant_phone?: string
+          created_at?: string
+          id?: string
+          resume_url?: string | null
+          status?: string
+          vacancy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_vacancy_id_fkey"
+            columns: ["vacancy_id"]
+            isOneToOne: false
+            referencedRelation: "job_vacancies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       job_vacancies: {
         Row: {
           created_at: string
@@ -207,6 +292,47 @@ export type Database = {
           visitor_id?: string | null
         }
         Relationships: []
+      }
+      product_inquiries: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          product_id: string
+          question: string
+          resolved: boolean
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          phone?: string | null
+          product_id: string
+          question: string
+          resolved?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          product_id?: string
+          question?: string
+          resolved?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_inquiries_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {

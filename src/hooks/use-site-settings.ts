@@ -12,7 +12,7 @@ export type SiteSettings = {
   google_maps_url: string | null;
   latitude: number | null;
   longitude: number | null;
-  theme: { mode?: "light" | "dark"; primary?: string } | null;
+  theme: { mode?: "default" | "light" | "dark" | "pro"; primary?: string } | null;
   quote_text: string | null;
   quote_author: string | null;
 };

@@ -100,6 +100,35 @@
   --ring: oklch(0.72 0.14 245);
 }
 
+.theme-pro {
+  --background: oklch(0.10 0.01 60);
+  --foreground: oklch(0.94 0.05 85);
+  --surface: oklch(0.14 0.02 65);
+  --card: oklch(0.14 0.02 65);
+  --card-foreground: oklch(0.94 0.05 85);
+  --popover: oklch(0.14 0.02 65);
+  --popover-foreground: oklch(0.94 0.05 85);
+  --primary: oklch(0.82 0.14 85);
+  --primary-foreground: oklch(0.12 0.02 60);
+  --primary-glow: oklch(0.90 0.12 90);
+  --brand-ink: oklch(0.90 0.13 88);
+  --secondary: oklch(0.18 0.02 60);
+  --secondary-foreground: oklch(0.94 0.05 85);
+  --muted: oklch(0.18 0.02 60);
+  --muted-foreground: oklch(0.75 0.06 85);
+  --accent: oklch(0.22 0.05 80);
+  --accent-foreground: oklch(0.94 0.08 85);
+  --border: oklch(0.82 0.14 85 / 22%);
+  --input: oklch(0.82 0.14 85 / 30%);
+  --ring: oklch(0.82 0.14 85);
+  font-family: "Times New Roman", "Times", Georgia, serif;
+}
+.theme-pro body,
+.theme-pro h1, .theme-pro h2, .theme-pro h3, .theme-pro h4,
+.theme-pro button, .theme-pro input, .theme-pro textarea, .theme-pro select {
+  font-family: "Times New Roman", "Times", Georgia, serif;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
