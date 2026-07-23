@@ -21,7 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as CareersSlugApplyRouteImport } from './routes/careers.$slug.apply'
+import { Route as CareersSlugApplyRouteImport } from './routes/careers_.$slug.apply'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
@@ -91,9 +91,9 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const CareersSlugApplyRoute = CareersSlugApplyRouteImport.update({
-  id: '/$slug/apply',
-  path: '/$slug/apply',
-  getParentRoute: () => CareersRoute,
+  id: '/careers_/$slug/apply',
+  path: '/careers/$slug/apply',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminSettingsRoute =
   AuthenticatedAdminSettingsRouteImport.update({
@@ -148,7 +148,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
-  '/careers': typeof CareersRouteWithChildren
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -170,7 +170,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
-  '/careers': typeof CareersRouteWithChildren
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -193,7 +193,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
-  '/careers': typeof CareersRouteWithChildren
+  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/products': typeof ProductsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -207,7 +207,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
-  '/careers/$slug/apply': typeof CareersSlugApplyRoute
+  '/careers_/$slug/apply': typeof CareersSlugApplyRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -275,7 +275,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/reports'
     | '/_authenticated/admin/settings'
-    | '/careers/$slug/apply'
+    | '/careers_/$slug/apply'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -285,10 +285,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
-  CareersRoute: typeof CareersRouteWithChildren
+  CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
   ProductsRoute: typeof ProductsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  CareersSlugApplyRoute: typeof CareersSlugApplyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -377,12 +378,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/careers/$slug/apply': {
-      id: '/careers/$slug/apply'
-      path: '/$slug/apply'
+    '/careers_/$slug/apply': {
+      id: '/careers_/$slug/apply'
+      path: '/careers/$slug/apply'
       fullPath: '/careers/$slug/apply'
       preLoaderRoute: typeof CareersSlugApplyRouteImport
-      parentRoute: typeof CareersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
@@ -492,27 +493,17 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
-interface CareersRouteChildren {
-  CareersSlugApplyRoute: typeof CareersSlugApplyRoute
-}
-
-const CareersRouteChildren: CareersRouteChildren = {
-  CareersSlugApplyRoute: CareersSlugApplyRoute,
-}
-
-const CareersRouteWithChildren =
-  CareersRoute._addFileChildren(CareersRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
-  CareersRoute: CareersRouteWithChildren,
+  CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
   ProductsRoute: ProductsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  CareersSlugApplyRoute: CareersSlugApplyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
