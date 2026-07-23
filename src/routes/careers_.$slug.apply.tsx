@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/careers/$slug/apply")({
+export const Route = createFileRoute("/careers_/$slug/apply")({
   component: ApplyPage,
 });
 
